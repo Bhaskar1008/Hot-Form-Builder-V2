@@ -1,7 +1,8 @@
 import React from 'react';
 import { FormComponent } from '../../../types/form';
-import { DisplayPropertiesType } from '../../../types/propertyTypes';
+import { ComponentProperties } from '../../../types/propertyTypes';
 import PropertyField from '../PropertyField';
+import TableDisplayTab from './TableDisplayTab';
 
 interface DisplayTabProps {
   component: FormComponent;
@@ -9,111 +10,93 @@ interface DisplayTabProps {
 }
 
 const DisplayTab: React.FC<DisplayTabProps> = ({ component, onChange }) => {
+  // For table components, use the specialized TableDisplayTab
+  if (component.type === 'table') {
+    return <TableDisplayTab component={component} onChange={onChange} />;
+  }
+
+  const getDisplayProperties = () => {
+    const baseProperties = [
+      { name: 'label', type: 'text', required: true },
+      { name: 'customClass', type: 'text' },
+      { name: 'hideLabel', type: 'switch' },
+      { name: 'disabled', type: 'switch' }
+    ];
+
+    const componentType = component.type as keyof ComponentProperties;
+    switch (componentType) {
+      case 'text':
+        return [
+          ...baseProperties,
+          { name: 'placeholder', type: 'text' },
+          { name: 'description', type: 'textarea' },
+          { name: 'tooltip', type: 'text' },
+          { name: 'prefix', type: 'text' },
+          { name: 'suffix', type: 'text' },
+          { name: 'showCharCount', type: 'switch' },
+          { name: 'showWordCount', type: 'switch' },
+          { name: 'spellcheck', type: 'switch' }
+        ];
+
+      case 'select':
+      case 'radio':
+        return [
+          ...baseProperties,
+          { name: 'description', type: 'textarea' },
+          { name: 'tooltip', type: 'text' }
+        ];
+
+      case 'checkbox':
+        return [
+          ...baseProperties,
+          { name: 'description', type: 'textarea' }
+        ];
+
+      case 'datetime':
+      case 'fileupload':
+      case 'signature':
+      case 'otp':
+      case 'tags':
+        return [
+          ...baseProperties,
+          { name: 'placeholder', type: 'text' },
+          { name: 'description', type: 'textarea' },
+          { name: 'tooltip', type: 'text' }
+        ];
+
+      default:
+        return baseProperties;
+    }
+  };
+
+  const handleDisplayChange = (name: string, value: any) => {
+    onChange({
+      display: {
+        ...component.display,
+        [name]: value
+      }
+    });
+  };
+
+  const properties = getDisplayProperties();
+
   return (
     <div className="space-y-6">
-      <PropertyField
-        label="Label"
-        type="text"
-        value={component.label}
-        onChange={(value) => onChange({ label: value })}
-        required
-      />
-
-      <PropertyField
-        label="Label Position"
-        type="select"
-        value={component.labelPosition || 'top'}
-        options={[
-          { label: 'Top', value: 'top' },
-          { label: 'Left', value: 'left' },
-          { label: 'Right', value: 'right' },
-          { label: 'Bottom', value: 'bottom' },
-        ]}
-        onChange={(value) => onChange({ labelPosition: value })}
-      />
-
-      <PropertyField
-        label="Placeholder"
-        type="text"
-        value={component.placeholder || ''}
-        onChange={(value) => onChange({ placeholder: value })}
-      />
-
-      <PropertyField
-        label="Description"
-        type="textarea"
-        value={component.description || ''}
-        onChange={(value) => onChange({ description: value })}
-      />
-
-      <PropertyField
-        label="Tooltip"
-        type="text"
-        value={component.tooltip || ''}
-        onChange={(value) => onChange({ tooltip: value })}
-      />
-
-      <div className="grid grid-cols-2 gap-4">
+      {properties.map((prop) => (
         <PropertyField
-          label="Prefix"
-          type="text"
-          value={component.prefix || ''}
-          onChange={(value) => onChange({ prefix: value })}
+          key={prop.name}
+          label={prop.name.split(/(?=[A-Z])/).join(' ').charAt(0).toUpperCase() + 
+                prop.name.split(/(?=[A-Z])/).join(' ').slice(1)}
+          type={prop.type}
+          value={component.display?.[prop.name as keyof typeof component.display] ?? ''}
+          onChange={(value) => handleDisplayChange(prop.name, value)}
+          options={prop.options}
+          required={prop.required}
+          placeholder={prop.placeholder}
+          min={prop.min}
+          max={prop.max}
         />
-
-        <PropertyField
-          label="Suffix"
-          type="text"
-          value={component.suffix || ''}
-          onChange={(value) => onChange({ suffix: value })}
-        />
-      </div>
-
-      <PropertyField
-        label="Custom CSS Class"
-        type="text"
-        value={component.customClass || ''}
-        onChange={(value) => onChange({ customClass: value })}
-      />
-
-      <div className="grid grid-cols-2 gap-4">
-        <PropertyField
-          label="Show Character Count"
-          type="switch"
-          value={component.showCharCount || false}
-          onChange={(value) => onChange({ showCharCount: value })}
-        />
-
-        <PropertyField
-          label="Show Word Count"
-          type="switch"
-          value={component.showWordCount || false}
-          onChange={(value) => onChange({ showWordCount: value })}
-        />
-      </div>
-
-      <div className="grid grid-cols-2 gap-4">
-        <PropertyField
-          label="Hide Label"
-          type="switch"
-          value={component.hideLabel || false}
-          onChange={(value) => onChange({ hideLabel: value })}
-        />
-
-        <PropertyField
-          label="Disabled"
-          type="switch"
-          value={component.disabled || false}
-          onChange={(value) => onChange({ disabled: value })}
-        />
-      </div>
-
-      <PropertyField
-        label="Spellcheck"
-        type="switch"
-        value={component.spellcheck || false}
-        onChange={(value) => onChange({ spellcheck: value })}
-      />
+      ))}
     </div>
   );
 };

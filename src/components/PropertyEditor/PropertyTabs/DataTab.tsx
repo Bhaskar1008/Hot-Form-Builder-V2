@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormComponent } from '../../../types/form';
-import { DataPropertiesType } from '../../../types/propertyTypes';
+import { ComponentProperties } from '../../../types/propertyTypes';
 import PropertyField from '../PropertyField';
 
 interface DataTabProps {
@@ -9,93 +9,101 @@ interface DataTabProps {
 }
 
 const DataTab: React.FC<DataTabProps> = ({ component, onChange }) => {
+  const getDataProperties = () => {
+    const baseProperties = [
+      { name: 'persistent', type: 'switch' },
+      { name: 'protected', type: 'switch' },
+      { name: 'tableView', type: 'switch' },
+      { name: 'modalEdit', type: 'switch' }
+    ];
+
+    const componentType = component.type as keyof ComponentProperties;
+    switch (componentType) {
+      case 'text':
+        return [
+          { name: 'defaultValue', type: 'text' },
+          { name: 'multiple', type: 'switch' },
+          { name: 'unique', type: 'switch' },
+          ...baseProperties,
+          { name: 'calculateValue', type: 'textarea' },
+          { name: 'calculateServer', type: 'switch' },
+          { name: 'allowCalculateOverride', type: 'switch' },
+          { name: 'encrypted', type: 'switch' }
+        ];
+
+      case 'checkbox':
+        return [
+          { name: 'defaultValue', type: 'switch' },
+          ...baseProperties,
+          { name: 'encrypted', type: 'switch' }
+        ];
+
+      case 'radio':
+      case 'select':
+        return [
+          { name: 'defaultValue', type: 'text' },
+          { name: 'multiple', type: 'switch' },
+          ...baseProperties,
+          { name: 'encrypted', type: 'switch' }
+        ];
+
+      case 'datetime':
+        return [
+          { name: 'defaultValue', type: 'text' },
+          ...baseProperties,
+          { name: 'encrypted', type: 'switch' }
+        ];
+
+      case 'fileupload':
+        return [
+          { name: 'multiple', type: 'switch' },
+          ...baseProperties,
+          { name: 'encrypted', type: 'switch' }
+        ];
+
+      case 'otp':
+        return [
+          { name: 'defaultValue', type: 'text' },
+          ...baseProperties
+        ];
+
+      case 'tags':
+        return [
+          { name: 'defaultValue', type: 'text' },
+          { name: 'multiple', type: 'switch' },
+          ...baseProperties
+        ];
+
+      case 'container':
+      case 'table':
+      case 'tabs':
+      case 'accordion':
+        return baseProperties;
+
+      default:
+        return [];
+    }
+  };
+
+  const properties = getDataProperties();
+
   return (
     <div className="space-y-6">
-      <PropertyField
-        label="Default Value"
-        type="text"
-        value={component.defaultValue || ''}
-        onChange={(value) => onChange({ defaultValue: value })}
-      />
-
-      <div className="grid grid-cols-2 gap-4">
+      {properties.map((prop) => (
         <PropertyField
-          label="Multiple Values"
-          type="switch"
-          value={component.multiple || false}
-          onChange={(value) => onChange({ multiple: value })}
+          key={prop.name}
+          label={prop.name.charAt(0).toUpperCase() + prop.name.slice(1)}
+          type={prop.type}
+          value={component.data?.[prop.name as keyof typeof component.data]}
+          onChange={(value) => onChange({
+            data: {
+              ...component.data,
+              [prop.name]: value
+            }
+          })}
+          options={prop.options}
         />
-
-        <PropertyField
-          label="Unique"
-          type="switch"
-          value={component.unique || false}
-          onChange={(value) => onChange({ unique: value })}
-        />
-      </div>
-
-      <div className="grid grid-cols-2 gap-4">
-        <PropertyField
-          label="Persistent"
-          type="switch"
-          value={component.persistent || false}
-          onChange={(value) => onChange({ persistent: value })}
-        />
-
-        <PropertyField
-          label="Protected"
-          type="switch"
-          value={component.protected || false}
-          onChange={(value) => onChange({ protected: value })}
-        />
-      </div>
-
-      <div className="grid grid-cols-2 gap-4">
-        <PropertyField
-          label="Table View"
-          type="switch"
-          value={component.tableView || false}
-          onChange={(value) => onChange({ tableView: value })}
-        />
-
-        <PropertyField
-          label="Modal Edit"
-          type="switch"
-          value={component.modalEdit || false}
-          onChange={(value) => onChange({ modalEdit: value })}
-        />
-      </div>
-
-      <PropertyField
-        label="Calculate Value"
-        type="textarea"
-        value={component.calculateValue || ''}
-        onChange={(value) => onChange({ calculateValue: value })}
-        placeholder="Enter JavaScript code for calculated value"
-      />
-
-      <div className="grid grid-cols-2 gap-4">
-        <PropertyField
-          label="Calculate on Server"
-          type="switch"
-          value={component.calculateServer || false}
-          onChange={(value) => onChange({ calculateServer: value })}
-        />
-
-        <PropertyField
-          label="Allow Override"
-          type="switch"
-          value={component.allowCalculateOverride || false}
-          onChange={(value) => onChange({ allowCalculateOverride: value })}
-        />
-      </div>
-
-      <PropertyField
-        label="Encrypted"
-        type="switch"
-        value={component.encrypted || false}
-        onChange={(value) => onChange({ encrypted: value })}
-      />
+      ))}
     </div>
   );
 };

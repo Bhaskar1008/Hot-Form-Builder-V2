@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { useDrop } from 'react-dnd';
 import { useDispatch } from 'react-redux';
 import { setSelectedComponent, reorderComponents } from '../../redux/slices/formSlice';
@@ -9,20 +9,22 @@ import classNames from 'classnames';
 import { componentMap } from '../../utils/componentMap';
 
 interface DropZoneProps {
-  components: FormComponent[];
+  components?: FormComponent[];
 }
 
-const DropZone: React.FC<DropZoneProps> = ({ components }) => {
+const DropZone: React.FC<DropZoneProps> = ({ components = [] }) => {
   const dispatch = useDispatch();
   const { handleDrop } = useDnd();
   const dragItem = useRef<number | null>(null);
   const dragOverItem = useRef<number | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
 
   const [{ isOver }, drop] = useDrop(() => ({
     accept: 'FORM_COMPONENT',
     drop: (item: FormComponent, monitor) => {
-      if (monitor.didDrop()) return;
-      handleDrop(item);
+      if (!monitor.didDrop()) {
+        handleDrop(item);
+      }
     },
     collect: (monitor) => ({
       isOver: monitor.isOver({ shallow: true }),
@@ -32,15 +34,17 @@ const DropZone: React.FC<DropZoneProps> = ({ components }) => {
   const handleDragStart = (e: React.DragEvent, position: number) => {
     e.stopPropagation();
     dragItem.current = position;
+    setIsDragging(true);
     e.currentTarget.classList.add('opacity-50', 'border-blue-500', 'shadow-lg');
   };
 
   const handleDragEnter = (e: React.DragEvent, position: number) => {
+    if (!isDragging) return;
+    
     e.preventDefault();
     e.stopPropagation();
     dragOverItem.current = position;
     
-    // Add visual feedback for the drop target
     const dropTargets = document.querySelectorAll('.component-item');
     dropTargets.forEach((target, index) => {
       if (index === position) {
@@ -53,12 +57,14 @@ const DropZone: React.FC<DropZoneProps> = ({ components }) => {
 
   const handleDragEnd = (e: React.DragEvent) => {
     e.stopPropagation();
+    setIsDragging(false);
+
     if (dragItem.current !== null && dragOverItem.current !== null) {
       const newComponents = [...components];
       const draggedItemContent = newComponents[dragItem.current];
       newComponents.splice(dragItem.current, 1);
       newComponents.splice(dragOverItem.current, 0, draggedItemContent);
-      dispatch(reorderComponents(newComponents));
+      dispatch(reorderComponents({ components: newComponents }));
     }
     
     // Clean up visual feedback
@@ -72,8 +78,17 @@ const DropZone: React.FC<DropZoneProps> = ({ components }) => {
   };
 
   const handleDragOver = (e: React.DragEvent) => {
+    if (!isDragging) return;
     e.preventDefault();
     e.stopPropagation();
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    const target = e.currentTarget as HTMLElement;
+    target.classList.remove('border-blue-500', 'border-dashed');
   };
 
   const handleComponentClick = (id: string) => {
@@ -83,7 +98,7 @@ const DropZone: React.FC<DropZoneProps> = ({ components }) => {
   const handleRemoveComponent = (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
     const newComponents = components.filter(c => c.id !== id);
-    dispatch(reorderComponents(newComponents));
+    dispatch(reorderComponents({ components: newComponents }));
     dispatch(setSelectedComponent(null));
   };
 
@@ -120,8 +135,9 @@ const DropZone: React.FC<DropZoneProps> = ({ components }) => {
                 draggable
                 onDragStart={(e) => handleDragStart(e, index)}
                 onDragEnter={(e) => handleDragEnter(e, index)}
-                onDragEnd={handleDragEnd}
                 onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDragEnd={handleDragEnd}
               >
                 <div 
                   className="absolute left-0 inset-y-0 flex items-center -translate-x-2 opacity-0 group-hover:opacity-100 transition-opacity cursor-move"

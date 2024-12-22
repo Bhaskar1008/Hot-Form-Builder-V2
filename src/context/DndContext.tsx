@@ -10,7 +10,7 @@ interface DndContextType {
   handleDrop: (item: FormComponent, targetId?: string) => void;
 }
 
-const DndContext = createContext<DndContextType | undefined>(undefined);
+const DndContext = createContext<DndContextType | null>(null);
 
 export const FormDndProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const dispatch = useDispatch();

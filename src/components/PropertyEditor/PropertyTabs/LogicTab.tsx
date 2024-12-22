@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormComponent } from '../../../types/form';
-import { LogicPropertiesType } from '../../../types/propertyTypes';
+import { ComponentProperties } from '../../../types/propertyTypes';
 import PropertyField from '../PropertyField';
 
 interface LogicTabProps {
@@ -9,91 +9,92 @@ interface LogicTabProps {
 }
 
 const LogicTab: React.FC<LogicTabProps> = ({ component, onChange }) => {
-  const logic = component.logic || {
-    conditional: {
-      show: null,
-      when: null,
-      eq: ''
+  const getLogicProperties = () => {
+    const baseConditionalProperties = [
+      { name: 'conditional.show', type: 'switch' },
+      { name: 'conditional.when', type: 'text' },
+      { name: 'conditional.eq', type: 'text' },
+      { name: 'customConditional', type: 'textarea' }
+    ];
+
+    const componentType = component.type as keyof ComponentProperties;
+    switch (componentType) {
+      case 'text':
+      case 'checkbox':
+      case 'radio':
+      case 'select':
+      case 'datetime':
+      case 'fileupload':
+      case 'otp':
+      case 'tags':
+        return [
+          ...baseConditionalProperties,
+          { name: 'calculateValue', type: 'textarea' }
+        ];
+
+      case 'button':
+        return [
+          { name: 'onClick', type: 'textarea' },
+          { name: 'customLogic', type: 'textarea' }
+        ];
+
+      case 'signature':
+        return baseConditionalProperties;
+
+      case 'container':
+      case 'table':
+      case 'tabs':
+      case 'accordion':
+        return [
+          ...baseConditionalProperties,
+          { name: 'calculateValue', type: 'textarea' }
+        ];
+
+      default:
+        return baseConditionalProperties;
     }
   };
 
-  const handleLogicChange = (key: string, value: any) => {
-    onChange({
-      logic: {
-        ...logic,
-        [key]: value
-      }
-    });
-  };
+  const properties = getLogicProperties();
 
-  const handleConditionalChange = (key: string, value: any) => {
-    onChange({
-      logic: {
-        ...logic,
-        conditional: {
-          ...logic.conditional,
-          [key]: value
+  const handleChange = (name: string, value: any) => {
+    if (name.includes('.')) {
+      const [parent, child] = name.split('.');
+      onChange({
+        logic: {
+          ...component.logic,
+          [parent]: {
+            ...component.logic?.[parent],
+            [child]: value
+          }
         }
-      }
-    });
+      });
+    } else {
+      onChange({
+        logic: {
+          ...component.logic,
+          [name]: value
+        }
+      });
+    }
   };
 
   return (
     <div className="space-y-6">
-      <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-        <h4 className="text-sm font-medium text-gray-900 mb-4">Conditional Logic</h4>
-        
-        <div className="space-y-4">
-          <PropertyField
-            label="Show When"
-            type="select"
-            value={logic.conditional.when || ''}
-            options={[
-              { label: 'Select field...', value: '' },
-              { label: 'Field 1', value: 'field1' },
-              { label: 'Field 2', value: 'field2' }
-            ]}
-            onChange={(value) => handleConditionalChange('when', value)}
-          />
-
-          <PropertyField
-            label="Equals"
-            type="text"
-            value={logic.conditional.eq}
-            onChange={(value) => handleConditionalChange('eq', value)}
-            placeholder="Enter value to compare"
-          />
-        </div>
-      </div>
-
-      <PropertyField
-        label="Custom Conditional Logic"
-        type="textarea"
-        value={logic.customConditional || ''}
-        onChange={(value) => handleLogicChange('customConditional', value)}
-        placeholder="Enter custom JavaScript condition"
-      />
-
-      <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-        <h4 className="text-sm font-medium text-gray-900 mb-4">Calculation Settings</h4>
-        
-        <div className="space-y-4">
-          <PropertyField
-            label="Calculate Value"
-            type="textarea"
-            value={logic.calculateValue || ''}
-            onChange={(value) => handleLogicChange('calculateValue', value)}
-            placeholder="Enter calculation JavaScript"
-          />
-
-          <PropertyField
-            label="Allow Calculate Override"
-            type="switch"
-            value={logic.allowCalculateOverride || false}
-            onChange={(value) => handleLogicChange('allowCalculateOverride', value)}
-          />
-        </div>
-      </div>
+      {properties.map((prop) => (
+        <PropertyField
+          key={prop.name}
+          label={prop.name.split('.').map(part => 
+            part.charAt(0).toUpperCase() + part.slice(1)
+          ).join(' ')}
+          type={prop.type}
+          value={prop.name.includes('.') 
+            ? component.logic?.[prop.name.split('.')[0]]?.[prop.name.split('.')[1]]
+            : component.logic?.[prop.name]}
+          onChange={(value) => handleChange(prop.name, value)}
+          options={prop.options}
+        />
+      ))}
     </div>
   );
 };
