@@ -16,6 +16,13 @@ export const addComponentReducer = (
     for (let i = 0; i < components.length; i++) {
       const current = components[i];
       
+      // Check if this component is the parent
+      if (current.id === component.parentId) {
+        if (!current.children) current.children = [];
+        current.children.push(component);
+        return true;
+      }
+      
       // Handle table cells
       if (current.type === 'table' && component.parentId?.startsWith('cell-')) {
         if (!current.children) current.children = [];

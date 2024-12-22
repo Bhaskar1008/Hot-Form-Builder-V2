@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { removeComponent, setSelectedComponent } from '../../../redux/slices/formSlice';
 import { useComponentTree } from '../../../hooks/useComponentTree';
-import { useDropTarget } from '../../../hooks/useDropTarget';
+import { useNestedDrop } from '../../../hooks/useNestedDrop';
 import { TabComponent } from './components/TabComponent';
 import classNames from 'classnames';
 
@@ -16,7 +16,10 @@ const TabContent: React.FC<TabContentProps> = ({ tabId, parentId, isActive }) =>
   const dispatch = useDispatch();
   const tabContentId = `${parentId}-${tabId}`;
   const { components, addComponent } = useComponentTree(tabContentId);
-  const [{ isOver }, drop] = useDropTarget({ onDrop: addComponent });
+  const [{ isOver, canDrop }, drop] = useNestedDrop({
+    parentId: tabContentId,
+    onDrop: addComponent
+  });
 
   if (!isActive) return null;
 
@@ -25,7 +28,7 @@ const TabContent: React.FC<TabContentProps> = ({ tabId, parentId, isActive }) =>
       ref={drop}
       className={classNames(
         'min-h-[200px] p-4 rounded-lg transition-colors',
-        isOver ? 'bg-blue-50 ring-2 ring-blue-400' : 'bg-white',
+        isOver && canDrop ? 'bg-blue-50 ring-2 ring-blue-400' : 'bg-white',
         components.length === 0 && 'flex items-center justify-center'
       )}
     >

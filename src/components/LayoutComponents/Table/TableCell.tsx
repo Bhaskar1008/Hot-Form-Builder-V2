@@ -2,9 +2,9 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { removeComponent, setSelectedComponent } from '../../../redux/slices/formSlice';
 import { useComponentTree } from '../../../hooks/useComponentTree';
-import { useDropTarget } from '../../../hooks/useDropTarget';
-import { CellDropZone } from './components/CellDropZone';
+import { useNestedDrop } from '../../../hooks/useNestedDrop';
 import { CellComponent } from './components/CellComponent';
+import { componentMap } from '../../../utils/componentMap';
 import classNames from 'classnames';
 
 interface TableCellProps {
@@ -23,7 +23,10 @@ const TableCell: React.FC<TableCellProps> = ({
   const dispatch = useDispatch();
   const cellId = `cell-${tableId}-${rowIndex}-${colIndex}`;
   const { components, addComponent } = useComponentTree(cellId);
-  const [{ isOver, canDrop }, drop] = useDropTarget({ onDrop: addComponent });
+  const [{ isOver, canDrop }, drop] = useNestedDrop({
+    parentId: cellId,
+    onDrop: addComponent
+  });
 
   return (
     <td 
@@ -35,16 +38,22 @@ const TableCell: React.FC<TableCellProps> = ({
       )}
     >
       <div className="space-y-2">
-        {components.map((component) => (
-          <CellComponent
-            key={component.id}
-            component={component}
-            onSelect={() => dispatch(setSelectedComponent(component.id))}
-            onRemove={() => dispatch(removeComponent(component.id))}
-          />
-        ))}
+        {components.map((component) => {
+          const Component = componentMap[component.type];
+          return Component ? (
+            <CellComponent
+              key={component.id}
+              component={component}
+              onSelect={() => dispatch(setSelectedComponent(component.id))}
+              onRemove={() => dispatch(removeComponent(component.id))}
+            />
+          ) : null;
+        })}
+        
         {(!components.length || isOver) && (
-          <CellDropZone onDrop={addComponent} />
+          <div className="flex items-center justify-center h-24 text-gray-400">
+            Drop components here
+          </div>
         )}
       </div>
     </td>
