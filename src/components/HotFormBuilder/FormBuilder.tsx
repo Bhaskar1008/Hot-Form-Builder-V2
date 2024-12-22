@@ -24,13 +24,15 @@ export const FormBuilder: React.FC = () => {
     <div className="h-screen bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
       <div className="flex h-full">
         {/* Component Panel */}
-        <div
-          className={classNames(
-            'relative bg-white shadow-lg transition-all duration-300',
-            isComponentPanelOpen ? 'w-80' : 'w-0'
-          )}
-        >
-          {!isPreviewMode && <ComponentToolbox />}
+        <div className="relative">
+          <div
+            className={classNames(
+              'bg-white shadow-lg transition-all duration-300 ease-in-out',
+              isComponentPanelOpen ? 'w-80' : 'w-0 overflow-hidden'
+            )}
+          >
+            {!isPreviewMode && <ComponentToolbox />}
+          </div>
           <PanelToggle
             isOpen={isComponentPanelOpen}
             onToggle={toggleComponentPanel}
@@ -74,13 +76,15 @@ export const FormBuilder: React.FC = () => {
 
         {/* Properties Panel */}
         {!isPreviewMode && selectedComponent && (
-          <div
-            className={classNames(
-              'relative bg-white shadow-lg transition-all duration-300',
-              isPropertiesPanelOpen ? 'w-96' : 'w-0'
-            )}
-          >
-            <PropertyEditor componentId={selectedComponent} />
+          <div className="relative">
+            <div
+              className={classNames(
+                'bg-white shadow-lg transition-all duration-300 ease-in-out',
+                isPropertiesPanelOpen ? 'w-96' : 'w-0 overflow-hidden'
+              )}
+            >
+              <PropertyEditor componentId={selectedComponent} />
+            </div>
             <PanelToggle
               isOpen={isPropertiesPanelOpen}
               onToggle={togglePropertiesPanel}
