@@ -26,6 +26,10 @@ const formSlice = createSlice({
     toggleOrientation: (state) => {
       state.orientation = state.orientation === 'horizontal' ? 'vertical' : 'horizontal';
     },
+    importComponents: (state, action: PayloadAction<FormComponent[]>) => {
+      state.components = action.payload;
+      state.selectedComponent = null;
+    },
   },
 });
 
@@ -36,6 +40,7 @@ export const {
   reorderComponents,
   setSelectedComponent,
   toggleOrientation,
+  importComponents,
 } = formSlice.actions;
 
 export default formSlice.reducer;

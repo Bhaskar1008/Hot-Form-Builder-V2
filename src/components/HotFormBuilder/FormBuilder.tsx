@@ -8,6 +8,7 @@ import FormPreview from '../Preview/FormPreview';
 import { Eye, Edit } from 'lucide-react';
 import { usePanelState } from '../../hooks/usePanelState';
 import PanelToggle from '../UI/PanelToggle';
+import { JsonActions } from '../UI/JsonActions/JsonActions';
 import classNames from 'classnames';
 
 export const FormBuilder: React.FC = () => {
@@ -47,22 +48,25 @@ export const FormBuilder: React.FC = () => {
             <h1 className="text-2xl font-semibold text-gray-800">
               {isPreviewMode ? 'Form Preview' : 'Form Builder'}
             </h1>
-            <button
-              onClick={() => setIsPreviewMode(!isPreviewMode)}
-              className="flex items-center px-4 py-2 rounded-md bg-white shadow-sm border transition-colors hover:bg-gray-50"
-            >
-              {isPreviewMode ? (
-                <>
-                  <Edit className="w-4 h-4 mr-2" />
-                  Edit
-                </>
-              ) : (
-                <>
-                  <Eye className="w-4 h-4 mr-2" />
-                  Preview
-                </>
-              )}
-            </button>
+            <div className="flex items-center gap-4">
+              <JsonActions />
+              <button
+                onClick={() => setIsPreviewMode(!isPreviewMode)}
+                className="flex items-center px-4 py-2 rounded-md bg-white shadow-sm border transition-colors hover:bg-gray-50"
+              >
+                {isPreviewMode ? (
+                  <>
+                    <Edit className="w-4 h-4 mr-2" />
+                    Edit
+                  </>
+                ) : (
+                  <>
+                    <Eye className="w-4 h-4 mr-2" />
+                    Preview
+                  </>
+                )}
+              </button>
+            </div>
           </div>
 
           <div className="bg-white rounded-xl shadow-lg min-h-[calc(100vh-12rem)]">
