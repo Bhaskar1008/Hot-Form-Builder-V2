@@ -11,7 +11,7 @@ import {
   LayoutGrid,
   Table2,
   Layers,
-  FolderTree
+  ChevronDown
 } from 'lucide-react';
 
 export const componentTabs = [
@@ -46,7 +46,7 @@ export const componentTabs = [
       { type: 'container', label: 'Container', icon: LayoutGrid },
       { type: 'table', label: 'Table', icon: Table2 },
       { type: 'tabs', label: 'Tabs', icon: Layers },
-      { type: 'accordion', label: 'Accordion', icon: FolderTree },
+      { type: 'collapse', label: 'Collapse', icon: ChevronDown },
     ]
   }
 ];

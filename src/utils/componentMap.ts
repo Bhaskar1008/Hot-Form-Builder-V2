@@ -11,7 +11,7 @@ import Tags from '../components/AdvancedComponents/Tags/Tags';
 import Container from '../components/LayoutComponents/Container/Container';
 import Table from '../components/LayoutComponents/Table/Table';
 import Tabs from '../components/LayoutComponents/Tabs/Tabs';
-import Accordion from '../components/LayoutComponents/Accordion/Accordion';
+import Collapse from '../components/LayoutComponents/Collapse/Collapse';
 
 export const componentMap: Record<string, React.FC<any>> = {
   text: TextField,
@@ -27,5 +27,5 @@ export const componentMap: Record<string, React.FC<any>> = {
   container: Container,
   table: Table,
   tabs: Tabs,
-  accordion: Accordion,
+  collapse: Collapse,
 };
