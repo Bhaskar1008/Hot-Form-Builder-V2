@@ -16,7 +16,7 @@ export const PanelToggle: React.FC<PanelToggleProps> = ({
     <div 
       className={classNames(
         'absolute top-1/2 -translate-y-1/2',
-        side === 'left' ? '-right-6' : '-left-6',
+        side === 'left' ? 'right-0 translate-x-full' : 'left-0 -translate-x-full',
         'z-50'
       )}
     >

@@ -1,84 +1,21 @@
 import React, { useState } from 'react';
 import { useDrag } from 'react-dnd';
 import { useDispatch } from 'react-redux';
-import { toggleOrientation } from '../../redux/slices/formSlice';
 import { FormComponent } from '../../types/form';
-import { 
-  TextCursor, 
-  CheckSquare, 
-  CircleDot, 
-  ListOrdered,
-  Calendar,
-  Upload,
-  PenTool,
-  Hash,
-  Tags,
-  LayoutGrid,
-  Table2,
-  Layers,
-  FolderTree,
-  ArrowLeftRight,
-  ArrowUpDown
-} from 'lucide-react';
+import { useOrientation } from '../../hooks/useOrientation';
+import { OrientationToggle } from '../UI/OrientationToggle';
+import { componentTabs } from './config/componentTabs';
 import classNames from 'classnames';
 
-interface TabConfig {
-  id: string;
-  label: string;
-  icon: React.FC<any>;
-  components: Array<{
-    type: string;
-    label: string;
-    icon: React.FC<any>;
-  }>;
-}
-
-const tabs: TabConfig[] = [
-  {
-    id: 'form',
-    label: 'Form Elements',
-    icon: LayoutGrid,
-    components: [
-      { type: 'text', label: 'Text Field', icon: TextCursor },
-      { type: 'checkbox', label: 'Checkbox', icon: CheckSquare },
-      { type: 'radio', label: 'Radio', icon: CircleDot },
-      { type: 'select', label: 'Select', icon: ListOrdered },
-    ]
-  },
-  {
-    id: 'advanced',
-    label: 'Advanced Elements',
-    icon: PenTool,
-    components: [
-      { type: 'datetime', label: 'Date/Time', icon: Calendar },
-      { type: 'fileupload', label: 'File Upload', icon: Upload },
-      { type: 'signature', label: 'Signature', icon: PenTool },
-      { type: 'otp', label: 'OTP', icon: Hash },
-      { type: 'tags', label: 'Tags', icon: Tags },
-    ]
-  },
-  {
-    id: 'layout',
-    label: 'Layout Components',
-    icon: Layers,
-    components: [
-      { type: 'container', label: 'Container', icon: LayoutGrid },
-      { type: 'table', label: 'Table', icon: Table2 },
-      { type: 'tabs', label: 'Tabs', icon: Layers },
-      { type: 'accordion', label: 'Accordion', icon: FolderTree },
-    ]
-  }
-];
-
-interface ComponentToolboxProps {
-  orientation: 'horizontal' | 'vertical';
-}
-
-const ComponentToolbox: React.FC<ComponentToolboxProps> = ({ orientation }) => {
+const ComponentToolbox: React.FC = () => {
   const [activeTab, setActiveTab] = useState('form');
-  const dispatch = useDispatch();
+  const { orientation, handleOrientationChange } = useOrientation();
 
-  const DraggableComponent: React.FC<{ type: string; label: string; Icon: any }> = ({ type, label, Icon }) => {
+  const DraggableComponent: React.FC<{ type: string; label: string; Icon: any }> = ({ 
+    type, 
+    label, 
+    Icon 
+  }) => {
     const [{ isDragging }, drag] = useDrag({
       type: 'FORM_COMPONENT',
       item: {
@@ -110,25 +47,18 @@ const ComponentToolbox: React.FC<ComponentToolboxProps> = ({ orientation }) => {
   return (
     <div className="flex flex-col h-full bg-gray-50">
       <div className="flex justify-between items-center px-4 py-3 bg-white border-b">
-        <h3 className="text-lg font-semibold text-gray-800">Components</h3>
-        <button
-          onClick={() => dispatch(toggleOrientation())}
-          className="p-2 rounded-md hover:bg-gray-100 transition-colors"
-          title={`Switch to ${orientation === 'horizontal' ? 'vertical' : 'horizontal'} layout`}
-        >
-          {orientation === 'horizontal' ? (
-            <ArrowLeftRight className="w-5 h-5 text-gray-600" />
-          ) : (
-            <ArrowUpDown className="w-5 h-5 text-gray-600" />
-          )}
-        </button>
+        <h3 className="text-lg font-semibold text-gray-800">Hot-Form Components</h3>
+        <OrientationToggle
+          orientation={orientation}
+          onChange={handleOrientationChange}
+        />
       </div>
       
       <div className={classNames(
         'flex gap-1 p-2 bg-white border-b',
         orientation === 'vertical' ? 'flex-col' : 'flex-row flex-wrap'
       )}>
-        {tabs.map((tab) => (
+        {componentTabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
@@ -153,7 +83,7 @@ const ComponentToolbox: React.FC<ComponentToolboxProps> = ({ orientation }) => {
       </div>
       
       <div className="flex-1 overflow-y-auto p-4 space-y-3">
-        {tabs.map((tab) => (
+        {componentTabs.map((tab) => (
           <div
             key={tab.id}
             className={classNames(
