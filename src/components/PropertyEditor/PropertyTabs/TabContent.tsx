@@ -9,10 +9,10 @@ interface TabContentProps {
 export const TabContent: React.FC<TabContentProps> = ({ orientation, children }) => {
   return (
     <div className={classNames(
-      'h-full bg-white',
+      'h-full bg-white flex flex-col',
       orientation === 'vertical' ? 'flex-1' : 'w-full'
     )}>
-      <div className="p-4 h-full overflow-y-auto">
+      <div className="flex-1 overflow-y-auto p-4">
         {children}
       </div>
     </div>

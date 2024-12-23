@@ -3,6 +3,7 @@ import { FormComponent } from '../../../types/form';
 import { ComponentProperties } from '../../../types/propertyTypes';
 import PropertyField from '../PropertyField';
 import TableDisplayTab from './TableDisplayTab';
+import WizardDisplayTab from './WizardDisplayTab';
 
 interface DisplayTabProps {
   component: FormComponent;
@@ -10,9 +11,13 @@ interface DisplayTabProps {
 }
 
 const DisplayTab: React.FC<DisplayTabProps> = ({ component, onChange }) => {
-  // For table components, use the specialized TableDisplayTab
+  // For specialized components, use their dedicated display tabs
   if (component.type === 'table') {
     return <TableDisplayTab component={component} onChange={onChange} />;
+  }
+  
+  if (component.type === 'wizard') {
+    return <WizardDisplayTab component={component} onChange={onChange} />;
   }
 
   const getDisplayProperties = () => {

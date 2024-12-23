@@ -8,9 +8,15 @@ interface UseNestedDropProps {
   parentId: string;
   accept?: string[];
   onDrop?: (item: FormComponent) => void;
+  isNested?: boolean;
 }
 
-export const useNestedDrop = ({ parentId, accept = ['FORM_COMPONENT'], onDrop }: UseNestedDropProps) => {
+export const useNestedDrop = ({ 
+  parentId, 
+  accept = ['FORM_COMPONENT'], 
+  onDrop,
+  isNested = false
+}: UseNestedDropProps) => {
   const dispatch = useDispatch();
 
   return useDrop(() => ({
@@ -29,6 +35,7 @@ export const useNestedDrop = ({ parentId, accept = ['FORM_COMPONENT'], onDrop }:
         ...item,
         id: uuidv4(),
         parentId,
+        children: isNested ? [] : undefined
       };
 
       dispatch(addComponent(newComponent));
@@ -39,5 +46,5 @@ export const useNestedDrop = ({ parentId, accept = ['FORM_COMPONENT'], onDrop }:
       canDrop: monitor.canDrop(),
       isDragging: !!monitor.getItem()
     })
-  }), [parentId, onDrop]);
+  }), [parentId, onDrop, isNested]);
 };

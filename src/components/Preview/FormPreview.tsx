@@ -19,29 +19,31 @@ const FormPreview: React.FC = () => {
     }));
   };
 
-  const renderLayoutComponent = (component: FormComponent) => {
-    switch (component.type) {
-      case 'container':
-        return <PreviewContainer component={component} renderComponent={renderComponent} />;
-      case 'table':
-        return <PreviewTable component={component} renderComponent={renderComponent} />;
-      case 'tabs':
-        return <PreviewTabs component={component} renderComponent={renderComponent} />;
-      case 'collapse':
-        return <PreviewCollapse component={component} renderComponent={renderComponent} />;
-      default:
-        const Component = componentMap[component.type];
-        return Component ? <Component component={component} /> : null;
-    }
-  };
-
-  const renderComponent = (component: FormComponent) => {
+  const renderComponent = (component: FormComponent): React.ReactNode => {
     const Component = componentMap[component.type];
     if (!Component) return null;
 
     // For layout components, use special rendering
-    if (['container', 'table', 'tabs', 'collapse'].includes(component.type)) {
-      return renderLayoutComponent(component);
+    if (['container', 'table', 'tabs', 'collapse', 'wizard'].includes(component.type)) {
+      switch (component.type) {
+        case 'container':
+          return <PreviewContainer key={component.id} component={component} renderComponent={renderComponent} />;
+        case 'table':
+          return <PreviewTable key={component.id} component={component} renderComponent={renderComponent} />;
+        case 'tabs':
+          return <PreviewTabs key={component.id} component={component} renderComponent={renderComponent} />;
+        case 'collapse':
+          return <PreviewCollapse key={component.id} component={component} renderComponent={renderComponent} />;
+        case 'wizard':
+          return (
+            <Component
+              key={component.id}
+              component={component}
+              renderComponent={renderComponent}
+              onChange={(value: any) => handleComponentChange(component.id, value)}
+            />
+          );
+      }
     }
 
     // For regular form components
@@ -60,7 +62,7 @@ const FormPreview: React.FC = () => {
     <div className="max-w-3xl mx-auto">
       <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
         <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
-          {components.map(renderComponent)}
+          {components.map(component => renderComponent(component))}
           
           <div className="flex flex-col sm:flex-row justify-end gap-2 sm:gap-4 pt-6 border-t">
             <button

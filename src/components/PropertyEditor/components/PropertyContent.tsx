@@ -21,11 +21,13 @@ export const PropertyContent: React.FC<PropertyContentProps> = ({
 
   return (
     <div className={classNames(
-      'bg-white',
+      'h-full flex flex-col',
       isVertical ? 'flex-1' : 'w-full'
     )}>
-      <div className="p-4 h-full overflow-y-auto">
-        <TabComponent component={component} onChange={onChange} />
+      <div className="flex-1 min-h-0 overflow-y-auto">
+        <div className="p-4">
+          <TabComponent component={component} onChange={onChange} />
+        </div>
       </div>
     </div>
   );

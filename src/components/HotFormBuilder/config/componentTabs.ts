@@ -11,7 +11,9 @@ import {
   LayoutGrid,
   Table2,
   Layers,
-  ChevronDown
+  ChevronDown,
+  Crown,
+  Wand
 } from 'lucide-react';
 
 export const componentTabs = [
@@ -36,6 +38,14 @@ export const componentTabs = [
       { type: 'signature', label: 'Signature', icon: PenTool },
       { type: 'otp', label: 'OTP', icon: Hash },
       { type: 'tags', label: 'Tags', icon: Tags },
+    ]
+  },
+  {
+    id: 'premium',
+    label: 'Premium Components',
+    icon: Crown,
+    components: [
+      { type: 'wizard', label: 'Wizard', icon: Wand },
     ]
   },
   {

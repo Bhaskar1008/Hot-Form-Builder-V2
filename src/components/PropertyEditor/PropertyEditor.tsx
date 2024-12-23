@@ -51,7 +51,7 @@ const PropertyEditor: React.FC<PropertyEditorProps> = ({ componentId }) => {
       />
       
       <div className={classNames(
-        'flex flex-1 overflow-hidden',
+        'flex flex-1 min-h-0',
         orientation === 'vertical' ? 'flex-row' : 'flex-col'
       )}>
         <PropertyTabList
@@ -61,12 +61,17 @@ const PropertyEditor: React.FC<PropertyEditorProps> = ({ componentId }) => {
           onTabChange={setActiveTab}
         />
         
-        <PropertyContent
-          tab={currentTab}
-          component={component}
-          orientation={orientation}
-          onChange={handleChange}
-        />
+        <div className={classNames(
+          'flex-1 min-h-0 overflow-hidden',
+          orientation === 'vertical' ? 'border-l' : 'border-t'
+        )}>
+          <PropertyContent
+            tab={currentTab}
+            component={component}
+            orientation={orientation}
+            onChange={handleChange}
+          />
+        </div>
       </div>
     </div>
   );

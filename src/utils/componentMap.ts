@@ -12,18 +12,27 @@ import Container from '../components/LayoutComponents/Container/Container';
 import Table from '../components/LayoutComponents/Table/Table';
 import Tabs from '../components/LayoutComponents/Tabs/Tabs';
 import Collapse from '../components/LayoutComponents/Collapse/Collapse';
+import { Wizard } from '../components/PremiumComponents';
 
 export const componentMap: Record<string, React.FC<any>> = {
+  // Basic Components
   text: TextField,
   checkbox: Checkbox,
   radio: Radio,
   select: Select,
   button: Button,
+
+  // Advanced Components
   datetime: DateTime,
   fileupload: FileUpload,
   signature: Signature,
   otp: OTP,
   tags: Tags,
+
+  // Premium Components
+  wizard: Wizard,
+
+  // Layout Components
   container: Container,
   table: Table,
   tabs: Tabs,
