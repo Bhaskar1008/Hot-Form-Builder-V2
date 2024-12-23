@@ -16,6 +16,7 @@ export interface FormComponent {
     customClass?: string;
     hideLabel?: boolean;
     disabled?: boolean;
+    collapseTitle?: string; // Added for Collapse component
   };
   children?: FormComponent[];
   parentId?: string;
