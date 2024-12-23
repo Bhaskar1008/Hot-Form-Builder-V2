@@ -126,6 +126,10 @@ src/
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
+## Contributors
+
+- **Bhaskar Keelu** - _Lead Developer_ - [bhaskar.keelu@iorta.in](mailto:bhaskar.keelu@iorta.in)
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

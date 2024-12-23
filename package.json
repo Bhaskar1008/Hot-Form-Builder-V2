@@ -3,6 +3,13 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "author": "Bhaskar Keelu <bhaskar.keelu@iorta.in>",
+  "contributors": [
+    {
+      "name": "Bhaskar Keelu",
+      "email": "bhaskar.keelu@iorta.in"
+    }
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vite build",
