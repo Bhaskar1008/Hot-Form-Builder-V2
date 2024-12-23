@@ -1,15 +1,22 @@
 {
   "name": "@hotform/react",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "tsc && vite build",
+    "build": "vite build",
     "lint": "eslint .",
     "prepublishOnly": "npm run build"
   },

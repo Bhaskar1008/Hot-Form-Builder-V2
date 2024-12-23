@@ -7,24 +7,22 @@ export default defineConfig({
   plugins: [
     react(),
     dts({
-      insertTypesEntry: true,
-    }),
+      include: ['src'],
+      rollupTypes: true
+    })
   ],
   build: {
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
-      name: 'HotForm',
-      formats: ['es'],
-      fileName: 'index',
+      formats: ['es', 'cjs'],
+      fileName: (format) => `index.${format === 'es' ? 'js' : 'cjs'}`
     },
     rollupOptions: {
-      external: ['react', 'react-dom'],
+      external: ['react', 'react/jsx-runtime', 'react-dom'],
       output: {
-        globals: {
-          react: 'React',
-          'react-dom': 'ReactDOM',
-        },
-      },
-    },
-  },
+        preserveModules: true,
+        exports: 'named'
+      }
+    }
+  }
 });
