@@ -1,6 +1,6 @@
 {
-  "name": "@hotform/react",
-  "version": "1.0.3",
+  "name": "@hotformbuilder/react",
+  "version": "1.0.5",
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.js",
