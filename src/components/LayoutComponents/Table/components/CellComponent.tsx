@@ -2,7 +2,6 @@ import React from 'react';
 import { FormComponent } from '../../../../types/form';
 import { componentMap } from '../../../../utils/componentMap';
 import { GripVertical, X } from 'lucide-react';
-import classNames from 'classnames';
 
 interface CellComponentProps {
   component: FormComponent;
@@ -21,7 +20,7 @@ export const CellComponent: React.FC<CellComponentProps> = ({
 
   return (
     <div
-      className="relative group bg-white rounded-lg border border-gray-200 hover:border-blue-200 hover:shadow-sm"
+      className="relative group bg-white rounded-lg border border-gray-200 hover:border-blue-200 hover:shadow-sm mb-2 last:mb-0"
       onClick={(e) => {
         e.stopPropagation();
         onSelect();

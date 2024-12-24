@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { WidgetComponent } from '../../types/form';
-import { v4 as uuidv4 } from 'uuid';
+import type { WidgetComponent } from '../../types/form';
 
 interface WidgetState {
   widgets: WidgetComponent[];
@@ -12,13 +11,12 @@ const initialState: WidgetState = {
   selectedWidget: null,
 };
 
-const widgetSlice = createSlice({
+export const widgetSlice = createSlice({
   name: 'widget',
   initialState,
   reducers: {
     addWidget: (state, action: PayloadAction<WidgetComponent>) => {
-      const widget = { ...action.payload, id: uuidv4() };
-      state.widgets.push(widget);
+      state.widgets.push(action.payload);
     },
     updateWidget: (state, action: PayloadAction<{ id: string; updates: Partial<WidgetComponent> }>) => {
       const { id, updates } = action.payload;
@@ -43,4 +41,5 @@ export const {
   setSelectedWidget,
 } = widgetSlice.actions;
 
+export type { WidgetState };
 export default widgetSlice.reducer;

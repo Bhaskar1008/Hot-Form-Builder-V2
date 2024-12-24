@@ -19,22 +19,18 @@ export const findParentComponent = (
   childId: string
 ): FormComponent | null => {
   for (const component of components) {
-    // Check if this is a table cell parent
     if (component.type === 'table' && childId.startsWith('cell-')) {
       return component;
     }
     
-    // Check if this is a tabs parent
     if (component.type === 'tabs' && childId.includes(component.id)) {
       return component;
     }
     
-    // Check direct children
     if (component.children?.some(child => child.id === childId)) {
       return component;
     }
     
-    // Check nested children
     if (component.children?.length) {
       const found = findParentComponent(component.children, childId);
       if (found) return found;
@@ -53,7 +49,7 @@ export const updateComponentInTree = (
       components[i] = { ...components[i], ...updates };
       return true;
     }
-    if (components[i].children?.length) {
+    if (components[i].children && components[i].children.length > 0) {
       if (updateComponentInTree(components[i].children, id, updates)) {
         return true;
       }
@@ -71,10 +67,10 @@ export const removeComponentFromTree = (
       components.splice(i, 1);
       return true;
     }
-    if (components[i].children?.length) {
+    if (components[i].children && components[i].children.length > 0) {
       if (removeComponentFromTree(components[i].children, id)) {
         if (components[i].children.length === 0) {
-          delete components[i].children;
+          components[i].children = undefined;
         }
         return true;
       }

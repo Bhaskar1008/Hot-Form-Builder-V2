@@ -28,34 +28,36 @@ const TableCell: React.FC<TableCellProps> = ({
     onDrop: addComponent
   });
 
+  const renderComponent = (component: FormComponent) => {
+    const Component = componentMap[component.type];
+    if (!Component) return null;
+
+    return (
+      <CellComponent
+        key={component.id}
+        component={component}
+        onSelect={() => dispatch(setSelectedComponent(component.id))}
+        onRemove={() => dispatch(removeComponent(component.id))}
+      />
+    );
+  };
+
   return (
     <td 
       ref={drop}
       className={classNames(
         'relative p-4 align-top min-h-[120px]',
         showBorders && 'border border-gray-200',
-        (isOver && canDrop) && 'bg-blue-50 ring-2 ring-blue-400'
+        (isOver && canDrop) && 'bg-blue-50'
       )}
     >
-      <div className="space-y-2">
-        {components.map((component) => {
-          const Component = componentMap[component.type];
-          return Component ? (
-            <CellComponent
-              key={component.id}
-              component={component}
-              onSelect={() => dispatch(setSelectedComponent(component.id))}
-              onRemove={() => dispatch(removeComponent(component.id))}
-            />
-          ) : null;
-        })}
-        
-        {(!components.length || isOver) && (
-          <div className="flex items-center justify-center h-24 text-gray-400">
-            Drop components here
-          </div>
-        )}
-      </div>
+      {components.map(renderComponent)}
+      
+      {(!components.length || isOver) && (
+        <p className="text-center text-gray-400 text-sm py-4">
+          Drop components here
+        </p>
+      )}
     </td>
   );
 };
