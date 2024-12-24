@@ -6,6 +6,7 @@ import { useNestedDrop } from '../../../hooks/useNestedDrop';
 import { CellComponent } from './components/CellComponent';
 import { componentMap } from '../../../utils/componentMap';
 import classNames from 'classnames';
+import type { FormComponent } from '../../../types/form';
 
 interface TableCellProps {
   rowIndex: number;
@@ -29,8 +30,8 @@ const TableCell: React.FC<TableCellProps> = ({
   });
 
   const renderComponent = (component: FormComponent) => {
-    const Component = componentMap[component.type];
-    if (!Component) return null;
+    const ComponentToRender = componentMap[component.type];
+    if (!ComponentToRender) return null;
 
     return (
       <CellComponent

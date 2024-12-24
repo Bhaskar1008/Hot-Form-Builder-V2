@@ -49,8 +49,10 @@ export const updateComponentInTree = (
       components[i] = { ...components[i], ...updates };
       return true;
     }
-    if (components[i].children && components[i].children.length > 0) {
-      if (updateComponentInTree(components[i].children, id, updates)) {
+    
+    const children = components[i].children;
+    if (children?.length) {
+      if (updateComponentInTree([...children], id, updates)) {
         return true;
       }
     }
@@ -67,9 +69,11 @@ export const removeComponentFromTree = (
       components.splice(i, 1);
       return true;
     }
-    if (components[i].children && components[i].children.length > 0) {
-      if (removeComponentFromTree(components[i].children, id)) {
-        if (components[i].children.length === 0) {
+    
+    const children = components[i].children;
+    if (children?.length) {
+      if (removeComponentFromTree([...children], id)) {
+        if (children.length === 0) {
           components[i].children = undefined;
         }
         return true;
