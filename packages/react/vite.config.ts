@@ -21,8 +21,12 @@ export default defineConfig({
       external: ['react', 'react/jsx-runtime', 'react-dom'],
       output: {
         preserveModules: true,
-        exports: 'named'
+        exports: 'named',
+        assetFileNames: 'styles.[ext]'
       }
     }
+  },
+  css: {
+    postcss: './postcss.config.js'
   }
 });
