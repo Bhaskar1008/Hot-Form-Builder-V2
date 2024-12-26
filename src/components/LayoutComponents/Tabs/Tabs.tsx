@@ -1,39 +1,109 @@
 import React, { useState } from 'react';
 import { FormComponent } from '../../../types/form';
+import TabList from './TabList';
+import TabContent from './TabContent';
 import classNames from 'classnames';
+import { useDispatch } from 'react-redux';
+import { updateComponent } from '../../../redux/slices/formSlice';
 
 interface TabsProps {
   component: FormComponent;
-  children?: React.ReactNode;
 }
 
-const Tabs: React.FC<TabsProps> = ({ component, children }) => {
+const Tabs: React.FC<TabsProps> = ({ component }) => {
+  const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState(0);
-  const tabs = component.settings?.tabs || [];
+
+  const {
+    orientation = 'horizontal',
+    tabs = [{ id: 'tab-1', label: 'Tab 1' }],
+    showBorder = true,
+    rounded = true,
+    shadow = true,
+  } = component.display || {};
+
+  const handleAddTab = () => {
+    const newTabs = [
+      ...tabs,
+      { id: `tab-${Date.now()}`, label: `Tab ${tabs.length + 1}` }
+    ];
+    dispatch(updateComponent({
+      id: component.id,
+      updates: {
+        display: {
+          ...component.display,
+          tabs: newTabs
+        }
+      }
+    }));
+  };
+
+  const handleTabRename = (index: number, newLabel: string) => {
+    const newTabs = tabs.map((tab, i) => 
+      i === index ? { ...tab, label: newLabel } : tab
+    );
+    dispatch(updateComponent({
+      id: component.id,
+      updates: {
+        display: {
+          ...component.display,
+          tabs: newTabs
+        }
+      }
+    }));
+  };
+
+  const handleOrientationChange = (newOrientation: 'horizontal' | 'vertical') => {
+    dispatch(updateComponent({
+      id: component.id,
+      updates: {
+        display: {
+          ...component.display,
+          orientation: newOrientation
+        }
+      }
+    }));
+  };
 
   return (
     <div className="mb-4">
-      <div className="border-b border-gray-200">
-        <nav className="-mb-px flex space-x-8" aria-label="Tabs">
-          {tabs.map((tab: { label: string }, index: number) => (
-            <button
-              key={index}
-              onClick={() => setActiveTab(index)}
-              className={classNames(
-                'py-2 px-1 border-b-2 text-sm font-medium',
-                activeTab === index
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              )}
-            >
-              {tab.label}
-            </button>
+      <label className="block text-sm font-medium text-gray-700 mb-2">
+        {component.label}
+        {component.required && <span className="text-red-500 ml-1">*</span>}
+      </label>
+      
+      <div
+        className={classNames(
+          'transition-all duration-200',
+          showBorder && 'border border-gray-200',
+          rounded && 'rounded-lg',
+          shadow && 'shadow-sm',
+          orientation === 'vertical' ? 'flex' : 'block'
+        )}
+      >
+        <TabList
+          tabs={tabs}
+          activeTab={activeTab}
+          orientation={orientation}
+          onTabClick={setActiveTab}
+          onAddTab={handleAddTab}
+          onTabRename={handleTabRename}
+          onOrientationChange={handleOrientationChange}
+        />
+
+        <div className={classNames(
+          'flex-1',
+          orientation === 'vertical' ? 'border-l' : 'border-t'
+        )}>
+          {tabs.map((tab, index) => (
+            <TabContent
+              key={tab.id}
+              tabId={tab.id}
+              parentId={component.id}
+              isActive={activeTab === index}
+            />
           ))}
-        </nav>
-      </div>
-      <div className="mt-4">
-        {tabs[activeTab]?.content}
-        {children}
+        </div>
       </div>
     </div>
   );

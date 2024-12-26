@@ -2,9 +2,9 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
 import { FormDndProvider } from './context/DndContext';
-import FormBuilder from './components/HotFormBuilder/FormBuilder';
+import { FormBuilder } from './components/HotFormBuilder';
 
-function App() {
+const App: React.FC = () => {
   return (
     <Provider store={store}>
       <FormDndProvider>
@@ -14,6 +14,6 @@ function App() {
       </FormDndProvider>
     </Provider>
   );
-}
+};
 
 export default App;

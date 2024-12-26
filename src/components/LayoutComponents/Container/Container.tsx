@@ -1,40 +1,51 @@
 import React from 'react';
-import { useDrop } from 'react-dnd';
-import { useDispatch } from 'react-redux';
-import { addComponent } from '../../../redux/slices/formSlice';
 import { FormComponent } from '../../../types/form';
+import { useNestedDrop } from '../../../hooks/useNestedDrop';
+import { componentMap } from '../../../utils/componentMap';
 import classNames from 'classnames';
 
 interface ContainerProps {
   component: FormComponent;
-  children?: React.ReactNode;
 }
 
-const Container: React.FC<ContainerProps> = ({ component, children }) => {
-  const dispatch = useDispatch();
-
-  const [{ isOver }, drop] = useDrop({
-    accept: 'FORM_COMPONENT',
-    drop: (item: FormComponent) => {
-      dispatch(addComponent({ ...item, parentId: component.id }));
-    },
-    collect: (monitor) => ({
-      isOver: monitor.isOver(),
-    }),
+const Container: React.FC<ContainerProps> = ({ component }) => {
+  const [{ isOver, canDrop }, drop] = useNestedDrop({
+    parentId: component.id
   });
 
+  const nestedComponents = component.children || [];
+
   return (
-    <div
-      ref={drop}
-      className={classNames(
-        'p-4 border rounded-lg',
-        isOver ? 'border-blue-500 bg-blue-50' : 'border-gray-300',
-        component.settings?.className
-      )}
-    >
-      <div className="text-sm font-medium text-gray-700 mb-2">{component.label}</div>
-      <div className="space-y-4">
-        {children}
+    <div className="mb-4">
+      <label className="block text-sm font-medium text-gray-700 mb-2">
+        {component.label}
+        {component.required && <span className="text-red-500 ml-1">*</span>}
+      </label>
+      
+      <div
+        ref={drop}
+        className={classNames(
+          'min-h-[100px] p-4 rounded-lg border-2 transition-colors',
+          isOver && canDrop ? 'border-blue-400 bg-blue-50' : 'border-gray-200',
+          component.display?.customClass
+        )}
+      >
+        {nestedComponents.length === 0 ? (
+          <div className="flex items-center justify-center h-24 text-gray-400">
+            Drop components here
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {nestedComponents.map((child) => {
+              const ChildComponent = componentMap[child.type];
+              return ChildComponent ? (
+                <div key={child.id} className="relative">
+                  <ChildComponent component={child} />
+                </div>
+              ) : null;
+            })}
+          </div>
+        )}
       </div>
     </div>
   );

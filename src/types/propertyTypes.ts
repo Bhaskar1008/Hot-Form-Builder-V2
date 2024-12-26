@@ -1,63 +1,41 @@
-import { z } from 'zod';
+// Update the existing file by adding CollapseProperties and removing AccordionProperties
 
-export const DisplayProperties = z.object({
-  label: z.string(),
-  labelPosition: z.enum(['top', 'left', 'right', 'bottom']),
-  placeholder: z.string().optional(),
-  description: z.string().optional(),
-  tooltip: z.string().optional(),
-  prefix: z.string().optional(),
-  suffix: z.string().optional(),
-  customClass: z.string().optional(),
-  tabindex: z.string().optional(),
-  hideLabel: z.boolean().optional(),
-  disabled: z.boolean().optional(),
-  autofocus: z.boolean().optional(),
-  inputType: z.string(),
-  showCharCount: z.boolean().optional(),
-  showWordCount: z.boolean().optional(),
-  spellcheck: z.boolean().optional(),
-});
-
-export const DataProperties = z.object({
-  defaultValue: z.any().optional(),
-  multiple: z.boolean().optional(),
-  unique: z.boolean().optional(),
-  persistent: z.boolean().optional(),
-  protected: z.boolean().optional(),
-  tableView: z.boolean().optional(),
-  modalEdit: z.boolean().optional(),
-  calculateValue: z.string().optional(),
-  calculateServer: z.boolean().optional(),
-  allowCalculateOverride: z.boolean().optional(),
-  encrypted: z.boolean().optional(),
-});
-
-export const ValidationProperties = z.object({
-  required: z.boolean(),
-  validateOn: z.enum(['change', 'blur']),
-  custom: z.string().optional(),
-  customPrivate: z.boolean().optional(),
-  strictDateValidation: z.boolean().optional(),
-  multiple: z.boolean().optional(),
-  unique: z.boolean().optional(),
-  minLength: z.string().optional(),
-  maxLength: z.string().optional(),
-  pattern: z.string().optional(),
-});
-
-export const LogicProperties = z.object({
-  conditional: z.object({
-    show: z.boolean().nullable(),
-    when: z.string().nullable(),
-    eq: z.string(),
+// Add this to the existing property schemas
+export const CollapseProperties = {
+  display: z.object({
+    ...baseDisplayProperties,
+    collapseTitle: z.string().optional(),
+    initiallyExpanded: z.boolean().optional(),
+    showBorder: z.boolean().optional(),
   }),
-  customConditional: z.string().optional(),
-  calculateValue: z.string().optional(),
-  allowCalculateOverride: z.boolean().optional(),
-});
+  data: z.object({
+    ...baseDataProperties,
+  }),
+  logic: z.object({
+    ...baseLogicProperties,
+    calculateValue: z.string().optional(),
+  }),
+};
 
-export type DisplayPropertiesType = z.infer<typeof DisplayProperties>;
-export type DataPropertiesType = z.infer<typeof DataProperties>;
-export type ValidationPropertiesType = z.infer<typeof ValidationProperties>;
-export type LogicPropertiesType = z.infer<typeof LogicProperties>;
+// Replace AccordionPropertiesType with CollapsePropertiesType in the exports
+export type CollapsePropertiesType = z.infer<typeof CollapseProperties.display> &
+  z.infer<typeof CollapseProperties.data> &
+  z.infer<typeof CollapseProperties.logic>;
+
+// Update ComponentProperties type
+export type ComponentProperties = {
+  text: TextFieldPropertiesType;
+  checkbox: CheckboxPropertiesType;
+  radio: RadioPropertiesType;
+  select: SelectPropertiesType;
+  button: ButtonPropertiesType;
+  datetime: DateTimePropertiesType;
+  fileupload: FileUploadPropertiesType;
+  signature: SignaturePropertiesType;
+  otp: OTPPropertiesType;
+  tags: TagsPropertiesType;
+  container: ContainerPropertiesType;
+  table: TablePropertiesType;
+  tabs: TabsPropertiesType;
+  collapse: CollapsePropertiesType;
+};

@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormComponent } from '../../../types/form';
-import { ValidationPropertiesType } from '../../../types/propertyTypes';
+import { ComponentProperties } from '../../../types/propertyTypes';
 import PropertyField from '../PropertyField';
 
 interface ValidationTabProps {
@@ -9,140 +9,82 @@ interface ValidationTabProps {
 }
 
 const ValidationTab: React.FC<ValidationTabProps> = ({ component, onChange }) => {
-  const validation = component.validation || {};
+  const getValidationProperties = () => {
+    const baseProperties = [
+      { name: 'required', type: 'switch' },
+      { name: 'validateOn', type: 'select', options: [
+        { label: 'Change', value: 'change' },
+        { label: 'Blur', value: 'blur' }
+      ]}
+    ];
 
-  const handleValidationChange = (key: string, value: any) => {
-    onChange({
-      validation: {
-        ...validation,
-        [key]: value
-      }
-    });
+    const componentType = component.type as keyof ComponentProperties;
+    switch (componentType) {
+      case 'text':
+        return [
+          ...baseProperties,
+          { name: 'custom', type: 'textarea' },
+          { name: 'customPrivate', type: 'switch' },
+          { name: 'minLength', type: 'text' },
+          { name: 'maxLength', type: 'text' },
+          { name: 'pattern', type: 'text' }
+        ];
+
+      case 'checkbox':
+      case 'radio':
+      case 'select':
+        return [
+          ...baseProperties,
+          { name: 'custom', type: 'textarea' },
+          { name: 'customPrivate', type: 'switch' }
+        ];
+
+      case 'datetime':
+        return [
+          ...baseProperties,
+          { name: 'strictDateValidation', type: 'switch' }
+        ];
+
+      case 'fileupload':
+      case 'signature':
+        return baseProperties;
+
+      case 'otp':
+        return [
+          ...baseProperties,
+          { name: 'minLength', type: 'text' },
+          { name: 'maxLength', type: 'text' }
+        ];
+
+      case 'table':
+        return [
+          { name: 'rowCount', type: 'number' }
+        ];
+
+      default:
+        return [];
+    }
   };
+
+  const properties = getValidationProperties();
 
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-2 gap-4">
+      {properties.map((prop) => (
         <PropertyField
-          label="Required"
-          type="switch"
-          value={validation.required || false}
-          onChange={(value) => handleValidationChange('required', value)}
+          key={prop.name}
+          label={prop.name.charAt(0).toUpperCase() + prop.name.slice(1)}
+          type={prop.type}
+          value={component.validation?.[prop.name as keyof typeof component.validation]}
+          onChange={(value) => onChange({
+            validation: {
+              ...component.validation,
+              [prop.name]: value
+            }
+          })}
+          options={prop.options}
         />
-
-        <PropertyField
-          label="Validate On"
-          type="select"
-          value={validation.validateOn || 'change'}
-          options={[
-            { label: 'Change', value: 'change' },
-            { label: 'Blur', value: 'blur' }
-          ]}
-          onChange={(value) => handleValidationChange('validateOn', value)}
-        />
-      </div>
-
-      <PropertyField
-        label="Custom Validation"
-        type="textarea"
-        value={validation.custom || ''}
-        onChange={(value) => handleValidationChange('custom', value)}
-        placeholder="Enter custom validation JavaScript"
-      />
-
-      <div className="grid grid-cols-2 gap-4">
-        <PropertyField
-          label="Minimum Length"
-          type="number"
-          value={validation.minLength || ''}
-          onChange={(value) => handleValidationChange('minLength', value)}
-        />
-
-        <PropertyField
-          label="Maximum Length"
-          type="number"
-          value={validation.maxLength || ''}
-          onChange={(value) => handleValidationChange('maxLength', value)}
-        />
-      </div>
-
-      <PropertyField
-        label="Pattern (Regex)"
-        type="text"
-        value={validation.pattern || ''}
-        onChange={(value) => handleValidationChange('pattern', value)}
-        placeholder="Enter regex pattern"
-      />
-
-      <div className="grid grid-cols-2 gap-4">
-        <PropertyField
-          label="Custom Private"
-          type="switch"
-          value={validation.customPrivate || false}
-          onChange={(value) => handleValidationChange('customPrivate', value)}
-        />
-
-        <PropertyField
-          label="Strict Date"
-          type="switch"
-          value={validation.strictDateValidation || false}
-          onChange={(value) => handleValidationChange('strictDateValidation', value)}
-        />
-      </div>
-
-      <div className="grid grid-cols-2 gap-4">
-        <PropertyField
-          label="Multiple"
-          type="switch"
-          value={validation.multiple || false}
-          onChange={(value) => handleValidationChange('multiple', value)}
-        />
-
-        <PropertyField
-          label="Unique"
-          type="switch"
-          value={validation.unique || false}
-          onChange={(value) => handleValidationChange('unique', value)}
-        />
-      </div>
-
-      <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-        <h4 className="text-sm font-medium text-gray-900 mb-2">Custom Error Messages</h4>
-        <div className="space-y-4">
-          <PropertyField
-            label="Required Message"
-            type="text"
-            value={validation.errorMessage?.required || ''}
-            onChange={(value) => handleValidationChange('errorMessage', {
-              ...validation.errorMessage,
-              required: value
-            })}
-            placeholder="Custom message for required field"
-          />
-
-          <PropertyField
-            label="Pattern Message"
-            type="text"
-            value={validation.errorMessage?.pattern || ''}
-            onChange={(value) => handleValidationChange('errorMessage', {
-              ...validation.errorMessage,
-              pattern: value
-            })}
-            placeholder="Custom message for pattern mismatch"
-          />
-
-          <PropertyField
-            label="Custom Message"
-            type="text"
-            value={validation.errorMessage?.custom || ''}
-            onChange={(value) => handleValidationChange('errorMessage', {
-              ...validation.errorMessage,
-              custom: value
-            })}
-            placeholder="Custom validation message"
-          />
-        </div>
-      </div>
+      ))}
     </div>
   );
 };
