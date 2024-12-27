@@ -13,7 +13,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   onChange 
 }) => {
   return (
-    <label className="flex items-center space-x-2">
+    <label className="flex items-center space-x-2 mb-4">
       <input
         type="checkbox"
         checked={value}

@@ -13,10 +13,11 @@ export const Tabs: React.FC<TabsProps> = ({
   const [activeTab, setActiveTab] = useState(0);
 
   return (
-    <div className={`space-y-4 ${component.display?.customClass || ''}`}>
-      {component.label && (
-        <h3 className="text-lg font-medium text-gray-900">{component.label}</h3>
-      )}
+    <div className="mb-4">
+      <label className="block text-sm font-medium text-gray-700 mb-2">
+        {component.label}
+        {component.required && <span className="text-red-500 ml-1">*</span>}
+      </label>
       <div className="border rounded-lg">
         <div className="flex border-b">
           {component.children?.map((child, index) => (
