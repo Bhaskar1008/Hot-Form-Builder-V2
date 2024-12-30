@@ -1,8 +1,8 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { removeComponent, setSelectedComponent } from '../../../../../../src/redux/slices/formSlice';
-import { useComponentTree } from '../../../../../../src/hooks/useComponentTree';
-import { useNestedDrop } from '../../../../../../src/hooks/useNestedDrop';
+import { removeComponent, setSelectedComponent } from '../../../store/slices/formSlice';
+import { useComponentTree } from '../../../hooks/useComponentTree';
+import { useNestedDrop } from '../../../hooks/useNestedDrop';
 import { CellComponent } from './components/CellComponent';
 import { componentMap } from '../../../utils/componentMap';
 import classNames from 'classnames';
@@ -37,23 +37,32 @@ const TableCell: React.FC<TableCellProps> = ({
         (isOver && canDrop) && 'bg-blue-50'
       )}
     >
-      {components.map((component) => {
-        const Component = componentMap[component.type];
-        return Component ? (
-          <CellComponent
-            key={component.id}
-            component={component}
-            onSelect={() => dispatch(setSelectedComponent(component.id))}
-            onRemove={() => dispatch(removeComponent(component.id))}
-          />
-        ) : null;
-      })}
-      
-      {(!components.length || isOver) && (
-        <p className="text-center text-gray-400 text-sm py-4">
-          Drop components here
-        </p>
-      )}
+      <tbody>
+        {components.map(component => {
+          const Component = componentMap[component.type];
+          if (!Component) return null;
+          
+          return (
+            <tr key={component.id}>
+              <td>
+                <CellComponent
+                  component={component}
+                  onSelect={() => dispatch(setSelectedComponent(component.id))}
+                  onRemove={() => dispatch(removeComponent(component.id))}
+                />
+              </td>
+            </tr>
+          );
+        })}
+        
+        {(!components.length || isOver) && (
+          <tr>
+            <td className="text-center text-gray-400 text-sm py-4">
+              Drop components here
+            </td>
+          </tr>
+        )}
+      </tbody>
     </td>
   );
 };

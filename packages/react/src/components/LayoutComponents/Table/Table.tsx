@@ -1,21 +1,17 @@
 import React from 'react';
-import { FormComponent } from '../../../types/form';
-import TableCell from './TableCell';
+import { TableHeader } from './components/TableHeader';
+import { TableContent } from './components/TableContent';
 import classNames from 'classnames';
-
-interface TableProps {
-  component: FormComponent;
-}
+import type { TableProps } from './types';
 
 const Table: React.FC<TableProps> = ({ component }) => {
   const {
-    rowCount = 3,
-    columnCount = 3,
     showHeaders = false,
     headers = [],
     showBorders = true,
     striped = false,
-    hover = true
+    hover = true,
+    columnCount = 3
   } = component.display || {};
 
   const tableHeaders = headers.length > 0 
@@ -25,15 +21,10 @@ const Table: React.FC<TableProps> = ({ component }) => {
         value: `column-${index + 1}`
       }));
 
-  const rows = Array(rowCount).fill(null);
-
   return (
     <div className="mb-4">
       {component.label && (
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          {component.label}
-          {component.required && <span className="text-red-500 ml-1">*</span>}
-        </label>
+        <h3 className="text-lg font-medium text-gray-900 mb-2">{component.label}</h3>
       )}
       <div className="overflow-x-auto">
         <table className={classNames(
@@ -41,50 +32,18 @@ const Table: React.FC<TableProps> = ({ component }) => {
           showBorders && 'border border-gray-200',
           component.display?.customClass
         )}>
-          <colgroup>
-            {Array(columnCount).fill(null).map((_, index) => (
-              <col key={index} />
-            ))}
-          </colgroup>
           {showHeaders && (
-            <thead className="bg-gray-50">
-              <tr>
-                {tableHeaders.map((header, index) => (
-                  <th
-                    key={header.value}
-                    scope="col"
-                    className={classNames(
-                      'px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider',
-                      showBorders && 'border-b border-gray-200'
-                    )}
-                  >
-                    {header.label}
-                  </th>
-                ))}
-              </tr>
-            </thead>
+            <TableHeader 
+              headers={tableHeaders}
+              showBorders={showBorders}
+            />
           )}
-          <tbody className="bg-white divide-y divide-gray-200">
-            {rows.map((_, rowIndex) => (
-              <tr 
-                key={rowIndex}
-                className={classNames(
-                  striped && rowIndex % 2 === 0 && 'bg-gray-50',
-                  hover && 'hover:bg-gray-100'
-                )}
-              >
-                {tableHeaders.map((_, colIndex) => (
-                  <TableCell
-                    key={`${rowIndex}-${colIndex}`}
-                    rowIndex={rowIndex}
-                    colIndex={colIndex}
-                    showBorders={showBorders}
-                    tableId={component.id}
-                  />
-                ))}
-              </tr>
-            ))}
-          </tbody>
+          <TableContent
+            component={component}
+            showBorders={showBorders}
+            striped={striped}
+            hover={hover}
+          />
         </table>
       </div>
     </div>

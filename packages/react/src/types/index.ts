@@ -1,3 +1,19 @@
+// Table specific display properties
+export interface TableDisplayProperties {
+  label?: string;
+  customClass?: string;
+  hideLabel?: boolean;
+  disabled?: boolean;
+  collapseTitle?: string;
+  rowCount?: number;
+  columnCount?: number;
+  showHeaders?: boolean;
+  headers?: Array<{ label: string; value: string }>;
+  showBorders?: boolean;
+  striped?: boolean;
+  hover?: boolean;
+}
+
 export interface FormComponent {
   id: string;
   type: string;
@@ -11,13 +27,18 @@ export interface FormComponent {
     minLength?: number;
     maxLength?: number;
   };
-  display?: {
-    label?: string;
-    customClass?: string;
-    hideLabel?: boolean;
-    disabled?: boolean;
-    collapseTitle?: string; // Added for Collapse component
-  };
+  display?: TableDisplayProperties;
   children?: FormComponent[];
   parentId?: string;
+}
+
+export interface FormState {
+  components: FormComponent[];
+  selectedComponent: string | null;
+  draggedComponent: FormComponent | null;
+  orientation: 'horizontal' | 'vertical';
+}
+
+export interface RootState {
+  form: FormState;
 }
