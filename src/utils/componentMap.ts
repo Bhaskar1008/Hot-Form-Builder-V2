@@ -12,7 +12,7 @@ import Container from '../components/LayoutComponents/Container/Container';
 import Table from '../components/LayoutComponents/Table/Table';
 import Tabs from '../components/LayoutComponents/Tabs/Tabs';
 import Collapse from '../components/LayoutComponents/Collapse/Collapse';
-import { Wizard } from '../components/PremiumComponents';
+import { Wizard, Language } from '../components/PremiumComponents';
 import { PieChart, DoughnutChart, BarChart, LineChart } from '../components/ChartComponents';
 
 export const componentMap: Record<string, React.FC<any>> = {
@@ -32,6 +32,7 @@ export const componentMap: Record<string, React.FC<any>> = {
 
   // Premium Components
   wizard: Wizard,
+  language: Language,
 
   // Layout Components
   container: Container,

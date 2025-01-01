@@ -14,6 +14,7 @@ import {
   ChevronDown,
   Crown,
   Wand,
+  Globe,
   PieChart,
   BarChart,
   LineChart,
@@ -50,6 +51,7 @@ export const componentTabs = [
     icon: Crown,
     components: [
       { type: 'wizard', label: 'Wizard', icon: Wand },
+      { type: 'language', label: 'Language', icon: Globe }
     ]
   },
   {

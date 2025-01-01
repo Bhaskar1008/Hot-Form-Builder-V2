@@ -7,6 +7,8 @@ import PreviewContainer from './components/PreviewContainer';
 import PreviewTable from './components/PreviewTable';
 import PreviewTabs from './components/PreviewTabs';
 import PreviewCollapse from './components/PreviewCollapse';
+import { TranslatedButton } from '../PremiumComponents/Language/components/TranslatedButton';
+import { TranslationProvider } from '../PremiumComponents/Language/context/TranslationContext';
 
 const FormPreview: React.FC = () => {
   const { components } = useSelector((state: RootState) => state.form);
@@ -59,38 +61,36 @@ const FormPreview: React.FC = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto">
-      <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
-        <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
-          {components.map(component => renderComponent(component))}
-          
-          <div className="flex flex-col sm:flex-row justify-end gap-2 sm:gap-4 pt-6 border-t">
-            <button
-              type="button"
-              onClick={() => setFormData({})}
-              className="px-4 py-2 text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors w-full sm:w-auto"
-            >
-              Reset
-            </button>
-            <button
-              type="submit"
-              className="px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors w-full sm:w-auto"
-            >
-              Submit
-            </button>
+    <TranslationProvider>
+      <div className="max-w-3xl mx-auto">
+        <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+          <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
+            {components.map(component => renderComponent(component))}
+            
+            <div className="flex flex-col sm:flex-row justify-end gap-2 sm:gap-4 pt-6 border-t">
+              <TranslatedButton
+                type="reset"
+                variant="secondary"
+                onClick={() => setFormData({})}
+              />
+              <TranslatedButton
+                type="submit"
+                variant="primary"
+              />
+            </div>
+          </form>
+        </div>
+        
+        <div className="mt-6 p-4">
+          <h3 className="text-lg font-medium text-gray-700 mb-2">Form Data</h3>
+          <div className="bg-gray-800 text-gray-100 p-4 rounded-lg overflow-x-auto">
+            <pre className="whitespace-pre-wrap break-words">
+              {JSON.stringify(formData, null, 2)}
+            </pre>
           </div>
-        </form>
-      </div>
-      
-      <div className="mt-6 p-4">
-        <h3 className="text-lg font-medium text-gray-700 mb-2">Form Data</h3>
-        <div className="bg-gray-800 text-gray-100 p-4 rounded-lg overflow-x-auto">
-          <pre className="whitespace-pre-wrap break-words">
-            {JSON.stringify(formData, null, 2)}
-          </pre>
         </div>
       </div>
-    </div>
+    </TranslationProvider>
   );
 };
 
