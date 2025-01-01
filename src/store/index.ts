@@ -1,15 +1,19 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import { PanelStore } from './types/panel';
-import { createPanelSlice } from './slices/panelSlice';
+import { configureStore } from '@reduxjs/toolkit';
+import { setupListeners } from '@reduxjs/toolkit/query';
+import { rootReducer } from './rootReducer';
 
-export const useStore = create<PanelStore>()(
-  persist(
-    (...args) => ({
-      ...createPanelSlice(...args),
+export const store = configureStore({
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
     }),
-    {
-      name: 'form-builder-store',
-    }
-  )
-);
+});
+
+setupListeners(store.dispatch);
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
+
+// Re-export everything from slices
+export * from './slices';

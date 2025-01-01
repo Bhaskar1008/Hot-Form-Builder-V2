@@ -1,19 +1,22 @@
-import { useStore } from '../store';
+import { useAppSelector, useAppDispatch } from '../store/hooks';
+import {
+  toggleComponentPanel,
+  togglePropertiesPanel,
+  setPanelStates,
+} from '../store/slices/panelSlice';
 
 export const usePanelState = () => {
-  const {
-    isComponentPanelOpen,
-    isPropertiesPanelOpen,
-    toggleComponentPanel,
-    togglePropertiesPanel,
-    setPanelStates
-  } = useStore();
+  const dispatch = useAppDispatch();
+  const { isComponentPanelOpen, isPropertiesPanelOpen } = useAppSelector(
+    (state) => state.panel
+  );
 
   return {
     isComponentPanelOpen,
     isPropertiesPanelOpen,
-    toggleComponentPanel,
-    togglePropertiesPanel,
-    setPanelStates
+    toggleComponentPanel: () => dispatch(toggleComponentPanel()),
+    togglePropertiesPanel: () => dispatch(togglePropertiesPanel()),
+    setPanelStates: (component: boolean, properties: boolean) =>
+      dispatch(setPanelStates({ component, properties })),
   };
 };

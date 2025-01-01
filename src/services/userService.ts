@@ -1,21 +1,26 @@
-import { MongoClient } from 'mongodb';
+import { User } from '../types/user';
 
-    const uri = process.env.MONGODB_URI!;
-    const client = new MongoClient(uri);
+const API_URL = 'http://localhost:5000/api';
 
-    export const fetchUsers = async () => {
-      await client.connect();
-      const database = client.db(process.env.DATABASE_NAME);
-      const users = await database.collection('users').find().toArray();
-      return users;
-    };
+export const fetchUsers = async (): Promise<User[]> => {
+  const response = await fetch(`${API_URL}/users`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch users');
+  }
+  return response.json();
+};
 
-    export const createUserIfNotExists = async (email: string, role: string) => {
-      await client.connect();
-      const database = client.db(process.env.DATABASE_NAME);
-      const user = await database.collection('users').findOne({ email });
-
-      if (!user) {
-        await database.collection('users').insertOne({ email, role });
-      }
-    };
+export const createUser = async (email: string, role: string): Promise<User> => {
+  const response = await fetch(`${API_URL}/users`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email, role }),
+  });
+  
+  if (!response.ok) {
+    throw new Error('Failed to create user');
+  }
+  return response.json();
+};
