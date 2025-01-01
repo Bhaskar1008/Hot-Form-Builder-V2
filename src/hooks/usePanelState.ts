@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
-import { toggleComponentPanel, togglePropertiesPanel, setPanelStates } from '../store/slices/panelSlice';
+import { toggleComponentPanel, togglePropertiesPanel } from '../redux/slices/panelSlice';
 
 export const usePanelState = () => {
   const dispatch = useDispatch();
@@ -12,8 +12,6 @@ export const usePanelState = () => {
     isComponentPanelOpen,
     isPropertiesPanelOpen,
     toggleComponentPanel: () => dispatch(toggleComponentPanel()),
-    togglePropertiesPanel: () => dispatch(togglePropertiesPanel()),
-    setPanelStates: (component: boolean, properties: boolean) =>
-      dispatch(setPanelStates({ component, properties })),
+    togglePropertiesPanel: () => dispatch(togglePropertiesPanel())
   };
 };
