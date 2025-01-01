@@ -14,6 +14,7 @@ import Tabs from '../components/LayoutComponents/Tabs/Tabs';
 import Collapse from '../components/LayoutComponents/Collapse/Collapse';
 import { Wizard, Language } from '../components/PremiumComponents';
 import { PieChart, DoughnutChart, BarChart, LineChart } from '../components/ChartComponents';
+import RestAPITrigger from '../components/APIComponents/RestAPITrigger/RestAPITrigger';
 
 export const componentMap: Record<string, React.FC<any>> = {
   // Basic Components
@@ -40,9 +41,12 @@ export const componentMap: Record<string, React.FC<any>> = {
   tabs: Tabs,
   collapse: Collapse,
 
-   // Chart Components
-   'pie-chart': PieChart,
-   'doughnut-chart': DoughnutChart,
-   'bar-chart': BarChart,
-   'line-chart': LineChart,
+  // Chart Components
+  'pie-chart': PieChart,
+  'doughnut-chart': DoughnutChart,
+  'bar-chart': BarChart,
+  'line-chart': LineChart,
+
+  // API Components
+  'rest-api': RestAPITrigger,
 };

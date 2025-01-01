@@ -18,7 +18,8 @@ import {
   PieChart,
   BarChart,
   LineChart,
-  TrendingUp
+  TrendingUp,
+  Network
 } from 'lucide-react';
 
 export const componentTabs = [
@@ -74,6 +75,14 @@ export const componentTabs = [
       { type: 'doughnut-chart', label: 'Doughnut Chart', icon: PieChart },
       { type: 'bar-chart', label: 'Bar Chart', icon: BarChart },
       { type: 'line-chart', label: 'Line Chart', icon: LineChart }
+    ]
+  },
+  {
+    id: 'api',
+    label: 'API Components',
+    icon: Network,
+    components: [
+      { type: 'rest-api', label: 'REST API Trigger', icon: Network }
     ]
   }
 ];
