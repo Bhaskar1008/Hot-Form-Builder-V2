@@ -1,13 +1,33 @@
-import { StateCreator } from 'zustand';
-import { PanelStore } from '../types/panel';
+import { createSlice } from '@reduxjs/toolkit';
 
-export const createPanelSlice: StateCreator<PanelStore> = (set) => ({
+interface PanelState {
+  isComponentPanelOpen: boolean;
+  isPropertiesPanelOpen: boolean;
+}
+
+const initialState: PanelState = {
   isComponentPanelOpen: true,
   isPropertiesPanelOpen: true,
-  toggleComponentPanel: () => 
-    set((state) => ({ isComponentPanelOpen: !state.isComponentPanelOpen })),
-  togglePropertiesPanel: () => 
-    set((state) => ({ isPropertiesPanelOpen: !state.isPropertiesPanelOpen })),
-  setPanelStates: (component, properties) => 
-    set({ isComponentPanelOpen: component, isPropertiesPanelOpen: properties }),
+};
+
+const panelSlice = createSlice({
+  name: 'panel',
+  initialState,
+  reducers: {
+    toggleComponentPanel: (state) => {
+      state.isComponentPanelOpen = !state.isComponentPanelOpen;
+    },
+    togglePropertiesPanel: (state) => {
+      state.isPropertiesPanelOpen = !state.isPropertiesPanelOpen;
+    },
+    setPanelStates: (state, action) => {
+      const { component, properties } = action.payload;
+      state.isComponentPanelOpen = component;
+      state.isPropertiesPanelOpen = properties;
+    },
+  },
 });
+
+export const { toggleComponentPanel, togglePropertiesPanel, setPanelStates } = panelSlice.actions;
+
+export default panelSlice.reducer;

@@ -1,14 +1,11 @@
-import { useAppSelector, useAppDispatch } from '../store/hooks';
-import {
-  toggleComponentPanel,
-  togglePropertiesPanel,
-  setPanelStates,
-} from '../store/slices/panelSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../redux/store';
+import { toggleComponentPanel, togglePropertiesPanel, setPanelStates } from '../store/slices/panelSlice';
 
 export const usePanelState = () => {
-  const dispatch = useAppDispatch();
-  const { isComponentPanelOpen, isPropertiesPanelOpen } = useAppSelector(
-    (state) => state.panel
+  const dispatch = useDispatch();
+  const { isComponentPanelOpen, isPropertiesPanelOpen } = useSelector(
+    (state: RootState) => state.panel
   );
 
   return {

@@ -1,6 +1,6 @@
 export { default as formReducer } from './formSlice';
 export { default as widgetReducer } from './widgetSlice';
-import panelReducer from './panelSlice';
+export { default as panelReducer } from './panelSlice';
 
 // Re-export actions for convenience
 export * from './formSlice';
