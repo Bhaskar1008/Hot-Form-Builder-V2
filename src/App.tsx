@@ -1,15 +1,16 @@
 import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { store } from './redux/store';
 import { FormDndProvider } from './context/DndContext';
 import AppRoutes from './routes';
 
 const App: React.FC = () => {
   return (
-    <BrowserRouter>
+    <Provider store={store}>
       <FormDndProvider>
         <AppRoutes />
       </FormDndProvider>
-    </BrowserRouter>
+    </Provider>
   );
 };
 
