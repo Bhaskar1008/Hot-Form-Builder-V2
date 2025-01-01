@@ -13,7 +13,12 @@ import {
   Layers,
   ChevronDown,
   Crown,
-  Wand
+  Wand,
+  Globe,
+  PieChart,
+  BarChart,
+  LineChart,
+  TrendingUp
 } from 'lucide-react';
 
 export const componentTabs = [
@@ -46,6 +51,7 @@ export const componentTabs = [
     icon: Crown,
     components: [
       { type: 'wizard', label: 'Wizard', icon: Wand },
+      { type: 'language', label: 'Language', icon: Globe }
     ]
   },
   {
@@ -57,6 +63,17 @@ export const componentTabs = [
       { type: 'table', label: 'Table', icon: Table2 },
       { type: 'tabs', label: 'Tabs', icon: Layers },
       { type: 'collapse', label: 'Collapse', icon: ChevronDown },
+    ]
+  },
+  {
+    id: 'charts',
+    label: 'Charts',
+    icon: TrendingUp,
+    components: [
+      { type: 'pie-chart', label: 'Pie Chart', icon: PieChart },
+      { type: 'doughnut-chart', label: 'Doughnut Chart', icon: PieChart },
+      { type: 'bar-chart', label: 'Bar Chart', icon: BarChart },
+      { type: 'line-chart', label: 'Line Chart', icon: LineChart }
     ]
   }
 ];

@@ -12,7 +12,8 @@ import Container from '../components/LayoutComponents/Container/Container';
 import Table from '../components/LayoutComponents/Table/Table';
 import Tabs from '../components/LayoutComponents/Tabs/Tabs';
 import Collapse from '../components/LayoutComponents/Collapse/Collapse';
-import { Wizard } from '../components/PremiumComponents';
+import { Wizard, Language } from '../components/PremiumComponents';
+import { PieChart, DoughnutChart, BarChart, LineChart } from '../components/ChartComponents';
 
 export const componentMap: Record<string, React.FC<any>> = {
   // Basic Components
@@ -31,10 +32,17 @@ export const componentMap: Record<string, React.FC<any>> = {
 
   // Premium Components
   wizard: Wizard,
+  language: Language,
 
   // Layout Components
   container: Container,
   table: Table,
   tabs: Tabs,
   collapse: Collapse,
+
+   // Chart Components
+   'pie-chart': PieChart,
+   'doughnut-chart': DoughnutChart,
+   'bar-chart': BarChart,
+   'line-chart': LineChart,
 };
