@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { resetPassword } from '../../../services/authService';
 import { AuthCard } from '../components/AuthCard';
 import { AuthInput } from '../components/AuthInput';
+import { Logo } from '../components/Logo';
 
 const ForgotPassword: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -31,8 +32,15 @@ const ForgotPassword: React.FC = () => {
 
   if (success) {
     return (
-      <AuthCard title="Check your email">
-        <div className="text-center">
+      <AuthCard>
+        <div className="sm:mx-auto sm:w-full sm:max-w-md">
+          <Logo className="mx-auto h-12 w-auto" />
+          <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
+            Check your email
+          </h2>
+        </div>
+
+        <div className="mt-8 text-center">
           <p className="text-sm text-gray-600 mb-4">
             We've sent password reset instructions to {email}
           </p>
@@ -48,42 +56,52 @@ const ForgotPassword: React.FC = () => {
   }
 
   return (
-    <AuthCard title="Reset your password">
-      <form className="space-y-6" onSubmit={handleSubmit}>
-        <div>
-          <p className="text-sm text-gray-600 mb-4">
+    <AuthCard>
+      <div className="sm:mx-auto sm:w-full sm:max-w-md">
+        <Logo className="mx-auto h-12 w-auto" />
+        <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
+          Reset your password
+        </h2>
+      </div>
+
+      <div className="mt-8">
+        <div className="mb-4">
+          <p className="text-sm text-gray-600">
             Enter your email address and we'll send you a link to reset your password.
           </p>
         </div>
 
-        <AuthInput
-          label="Email address"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          autoComplete="email"
-          error={error}
-        />
+        <form className="space-y-6" onSubmit={handleSubmit}>
+          <AuthInput
+            label="Email address"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            autoComplete="email"
+            error={error}
+          />
 
-        <div>
-          <button
-            type="submit"
-            disabled={loading}
-            className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
-              loading ? 'opacity-50 cursor-not-allowed' : ''
-            }`}
-          >
-            {loading ? 'Sending...' : 'Send reset link'}
-          </button>
-        </div>
+          <div>
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+            >
+              {loading ? 'Sending...' : 'Send reset link'}
+            </button>
+          </div>
 
-        <div className="text-sm text-center">
-          <Link to="/" className="font-medium text-blue-600 hover:text-blue-500">
-            Back to sign in
-          </Link>
-        </div>
-      </form>
+          <div className="text-sm text-center">
+            <Link
+              to="/"
+              className="font-medium text-blue-600 hover:text-blue-500"
+            >
+              Back to sign in
+            </Link>
+          </div>
+        </form>
+      </div>
     </AuthCard>
   );
 };
