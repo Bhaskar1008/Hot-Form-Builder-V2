@@ -4,7 +4,8 @@ import { useDispatch } from 'react-redux';
 import { setSelectedComponent, reorderComponents } from '../../redux/slices/formSlice';
 import { FormComponent } from '../../types/form';
 import { useDnd } from '../../context/DndContext';
-import { GripVertical, X } from 'lucide-react';
+import { GripVertical } from 'lucide-react';
+import { ComponentActions } from '../UI/ComponentActions/ComponentActions';
 import classNames from 'classnames';
 import { componentMap } from '../../utils/componentMap';
 
@@ -95,8 +96,7 @@ const DropZone: React.FC<DropZoneProps> = ({ components = [] }) => {
     dispatch(setSelectedComponent(id));
   };
 
-  const handleRemoveComponent = (id: string, e: React.MouseEvent) => {
-    e.stopPropagation();
+  const handleRemoveComponent = (id: string) => {
     const newComponents = components.filter(c => c.id !== id);
     dispatch(reorderComponents({ components: newComponents }));
     dispatch(setSelectedComponent(null));
@@ -148,14 +148,10 @@ const DropZone: React.FC<DropZoneProps> = ({ components = [] }) => {
                   </div>
                 </div>
                 
-                <div className="absolute right-2 top-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <button
-                    onClick={(e) => handleRemoveComponent(component.id, e)}
-                    className="w-8 h-8 flex items-center justify-center bg-white rounded-full shadow-md border border-gray-200 hover:border-red-500 hover:bg-red-50"
-                  >
-                    <X className="w-4 h-4 text-red-500" />
-                  </button>
-                </div>
+                <ComponentActions
+                  component={component}
+                  onRemove={() => handleRemoveComponent(component.id)}
+                />
 
                 <div className="p-4 ml-8">
                   <Component component={component} />
