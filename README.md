@@ -1,142 +1,53 @@
 # HotForm Builder
 
-A powerful and flexible form builder application built with React, Redux, and TypeScript. Create dynamic forms with drag-and-drop functionality, advanced components, and real-time preview.
+    A powerful and flexible form builder application built with React, Redux, and TypeScript. Create dynamic forms with drag-and-drop functionality, advanced components, and real-time preview.
 
-## Features
+    ## Features
 
-### Component Library
-- **Basic Form Elements**
-  - Text Field
-  - Checkbox
-  - Radio
-  - Select
-  - Button
+    - Login, Registration, and Forgot Password functionality
+    - Role-based access management
+    - User management with dynamic data fetching from MongoDB
+    - Automatic creation of missing models or data
 
-- **Advanced Components**
-  - Date/Time Picker
-  - File Upload
-  - Signature Pad
-  - OTP Input
-  - Tags Input
+    ## Getting Started
 
-- **Layout Components**
-  - Container
-  - Table
-  - Tabs
-  - Accordion
+    ### Prerequisites
+    - Node.js 16+
+    - npm or yarn
 
-### Builder Features
-- Drag-and-drop interface
-- Real-time component preview
-- Comprehensive property editor
-- Component search functionality
-- Responsive layout with horizontal/vertical orientation
-- Component reordering within forms
+    ### Installation
 
-### Property Editor
-- **Display Tab**: Configure visual aspects and layout
-- **Data Tab**: Manage data binding and default values
-- **Validation Tab**: Set up validation rules and messages
-- **Logic Tab**: Define conditional behavior and calculations
+    1. Clone the repository:
+    ```bash
+    git clone https://github.com/yourusername/hotform-builder.git
+    ```
 
-## Tech Stack
+    2. Install dependencies:
+    ```bash
+    npm install
+    ```
 
-- React 18
-- TypeScript
-- Redux Toolkit
-- React DnD
-- Tailwind CSS
-- Radix UI
-- Lucide React Icons
-- Zod
+    3. Create a `.env` file in the root directory with the following content:
+    ```
+    MONGODB_URI=mongodb+srv://bhaskarkeelu92:HotForm@2024@hot-form-dev.lcij1.mongodb.net/?retryWrites=true&w=majority&appName=Hot-Form-Dev
+    ```
 
-## Getting Started
+    4. Start the Express server:
+    ```bash
+    node server.js
+    ```
 
-### Prerequisites
-- Node.js 16+
-- npm or yarn
+    5. Start the development server:
+    ```bash
+    npm run dev
+    ```
 
-### Installation
+    ## Usage
 
-1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/hotform-builder.git
-```
+    - Access the application at `http://localhost:3000`
+    - Use the login page to access the dashboard
+    - Register new users and manage existing users through the user management section
 
-2. Install dependencies:
-```bash
-npm install
-```
+    ## License
 
-3. Start the development server:
-```bash
-npm run dev
-```
-
-## Project Structure
-
-```
-src/
-├── components/
-│   ├── BasicComponents/
-│   │   ├── TextField/
-│   │   ├── Checkbox/
-│   │   ├── Radio/
-│   │   ├── Select/
-│   │   └── Button/
-│   ├── AdvancedComponents/
-│   │   ├── DateTime/
-│   │   ├── FileUpload/
-│   │   ├── Signature/
-│   │   ├── OTP/
-│   │   └── Tags/
-│   ├── LayoutComponents/
-│   │   ├── Container/
-│   │   ├── Table/
-│   │   ├── Tabs/
-│   │   └── Accordion/
-│   └── HotFormBuilder/
-├── context/
-├── redux/
-├── types/
-└── utils/
-```
-
-## Component Properties
-
-### Common Properties
-- Label
-- Required status
-- Placeholder
-- Custom CSS classes
-- Validation rules
-- Default values
-
-### Advanced Properties
-- Custom validation
-- Error messages
-- Conditional logic
-- Calculation formulas
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## Contributors
-
-- **Bhaskar Keelu** - _Lead Developer_ - [bhaskar.keelu@iorta.in](mailto:bhaskar.keelu@iorta.in)
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-- [React DnD](https://react-dnd.github.io/react-dnd/) for drag-and-drop functionality
-- [Tailwind CSS](https://tailwindcss.com/) for styling
-- [Lucide React](https://lucide.dev/) for icons
-- [Radix UI](https://www.radix-ui.com/) for accessible components
+    This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
