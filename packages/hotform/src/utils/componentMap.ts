@@ -1,26 +1,16 @@
+import type { ComponentProps, LayoutComponentProps, ChartComponentProps, APIComponentProps } from '../types/form';
 import { BasicComponents } from '../components/Basic';
 import { AdvancedComponents } from '../components/Advanced';
-import { PremiumComponents } from '../components/Premium';
 import { LayoutComponents } from '../components/Layout';
 import { ChartComponents } from '../components/Chart';
 import { APIComponents } from '../components/API';
 
-export const componentMap = {
-  // Basic Components
+type ComponentType = React.FC<ComponentProps | LayoutComponentProps | ChartComponentProps | APIComponentProps>;
+
+export const componentMap: Record<string, ComponentType> = {
   ...BasicComponents,
-  
-  // Advanced Components
   ...AdvancedComponents,
-  
-  // Premium Components
-  ...PremiumComponents,
-  
-  // Layout Components
   ...LayoutComponents,
-  
-  // Chart Components
   ...ChartComponents,
-  
-  // API Components
-  ...APIComponents,
+  ...APIComponents
 };

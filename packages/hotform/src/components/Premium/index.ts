@@ -1,7 +1,9 @@
-import Wizard from './Wizard';
-import Language from './Language';
+import Wizard from './Wizard/Wizard';
+import Language from './Language/Language';
 
 export const PremiumComponents = {
   wizard: Wizard,
-  language: Language,
+  language: Language
 };
+
+export { Wizard, Language };

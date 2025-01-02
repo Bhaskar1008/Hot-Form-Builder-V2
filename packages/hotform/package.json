@@ -1,5 +1,5 @@
 {
-  "name": "@hotformbuilder/react",
+  "name": "reactformbuilder-core",
   "version": "1.0.0",
   "description": "A dynamic form builder component for React applications",
   "main": "dist/index.js",
