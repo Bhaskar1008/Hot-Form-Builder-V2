@@ -1,29 +1,34 @@
-// Update the existing file by adding CollapseProperties and removing AccordionProperties
+import { z } from 'zod';
 
-// Add this to the existing property schemas
-export const CollapseProperties = {
-  display: z.object({
-    ...baseDisplayProperties,
-    collapseTitle: z.string().optional(),
-    initiallyExpanded: z.boolean().optional(),
-    showBorder: z.boolean().optional(),
-  }),
-  data: z.object({
-    ...baseDataProperties,
-  }),
-  logic: z.object({
-    ...baseLogicProperties,
-    calculateValue: z.string().optional(),
-  }),
+export const baseDisplayProperties = {
+  label: z.string(),
+  customClass: z.string().optional(),
+  hideLabel: z.boolean().optional(),
+  disabled: z.boolean().optional(),
 };
 
-// Replace AccordionPropertiesType with CollapsePropertiesType in the exports
-export type CollapsePropertiesType = z.infer<typeof CollapseProperties.display> &
-  z.infer<typeof CollapseProperties.data> &
-  z.infer<typeof CollapseProperties.logic>;
+export const baseDataProperties = {
+  persistent: z.boolean().optional(),
+  protected: z.boolean().optional(),
+  tableView: z.boolean().optional(),
+  modalEdit: z.boolean().optional(),
+};
 
-// Update ComponentProperties type
-export type ComponentProperties = {
+export const baseValidationProperties = {
+  required: z.boolean().optional(),
+  validateOn: z.enum(['change', 'blur']).optional(),
+};
+
+export const baseLogicProperties = {
+  conditional: z.object({
+    show: z.boolean().optional(),
+    when: z.string().optional(),
+    eq: z.string().optional(),
+  }).optional(),
+  customConditional: z.string().optional(),
+};
+
+export interface ComponentProperties {
   text: TextFieldPropertiesType;
   checkbox: CheckboxPropertiesType;
   radio: RadioPropertiesType;
@@ -38,4 +43,4 @@ export type ComponentProperties = {
   table: TablePropertiesType;
   tabs: TabsPropertiesType;
   collapse: CollapsePropertiesType;
-};
+}

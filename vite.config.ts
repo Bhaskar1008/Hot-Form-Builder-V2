@@ -18,11 +18,24 @@ export default defineConfig({
       fileName: (format) => `index.${format}.js`,
     },
     rollupOptions: {
-      external: ['react', 'react-dom'],
+      external: [
+        'react',
+        'react-dom',
+        'react-redux',
+        'react-router-dom',
+        '@reduxjs/toolkit',
+        'zustand',
+        'tailwindcss'
+      ],
       output: {
         globals: {
           react: 'React',
           'react-dom': 'ReactDOM',
+          'react-redux': 'ReactRedux',
+          'react-router-dom': 'ReactRouterDOM',
+          '@reduxjs/toolkit': 'RTK',
+          'zustand': 'zustand',
+          'tailwindcss': 'tailwindcss'
         },
       },
     },
