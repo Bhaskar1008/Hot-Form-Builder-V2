@@ -1,56 +1,61 @@
 {
-  "name": "hotform-builder",
-  "private": true,
-  "version": "1.0.1",
-  "type": "module",
-  "author": "Bhaskar Keelu <bhaskar.keelu@iorta.in>",
-  "contributors": [
-    {
-      "name": "Bhaskar Keelu",
-      "email": "bhaskar.keelu@iorta.in"
-    }
+  "name": "@hotformbuilder/react",
+  "version": "1.1.3",
+  "description": "Dynamic form builder component for React applications",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hotformbuilder/react.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
   ],
   "scripts": {
-    "dev": "vite",
     "build": "vite build",
+    "test": "vitest",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "prepublishOnly": "npm run build"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
   },
   "dependencies": {
     "@radix-ui/react-switch": "^1.0.3",
     "@radix-ui/react-tabs": "^1.0.4",
-    "@reduxjs/toolkit": "^2.2.1",
     "chart.js": "^4.4.1",
     "classnames": "^2.5.1",
     "lucide-react": "^0.344.0",
-    "mongodb": "^6.12.0",
-    "react": "^18.3.1",
     "react-chartjs-2": "^5.2.0",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
-    "react-dom": "^18.3.1",
-    "react-redux": "^9.1.0",
-    "react-router-dom": "^6.22.3",
     "uuid": "^9.0.1",
-    "zod": "^3.22.4",
-    "zustand": "^4.5.5"
+    "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@eslint/js": "^9.9.1",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "@types/uuid": "^9.0.8",
     "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.18",
-    "eslint": "^9.9.1",
-    "eslint-plugin-react-hooks": "^5.1.0-rc.0",
-    "eslint-plugin-react-refresh": "^0.4.11",
-    "globals": "^15.9.0",
     "postcss": "^8.4.35",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.5.3",
-    "typescript-eslint": "^8.3.0",
     "vite": "^5.4.2",
     "vite-plugin-dts": "^4.3.0"
-  }
+  },
+  "keywords": [
+    "react",
+    "form",
+    "builder",
+    "dynamic",
+    "components"
+  ],
+  "author": "StackBlitz",
+  "license": "MIT"
 }

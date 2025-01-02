@@ -1,53 +1,95 @@
-# HotForm Builder
+# HotForm Builder for React
 
-    A powerful and flexible form builder application built with React, Redux, and TypeScript. Create dynamic forms with drag-and-drop functionality, advanced components, and real-time preview.
+A powerful and flexible form builder component for React applications that allows you to create dynamic forms using a simple configuration object.
 
-    ## Features
+## Installation
 
-    - Login, Registration, and Forgot Password functionality
-    - Role-based access management
-    - User management with dynamic data fetching from MongoDB
-    - Automatic creation of missing models or data
+```bash
+npm install @hotformbuilder/react
+```
 
-    ## Getting Started
+## Usage
 
-    ### Prerequisites
-    - Node.js 16+
-    - npm or yarn
+```tsx
+import { HotForm } from '@hotformbuilder/react';
 
-    ### Installation
+const formConfig = {
+  components: [
+    {
+      id: 'name',
+      type: 'text',
+      label: 'Full Name',
+      required: true
+    },
+    {
+      id: 'email',
+      type: 'text',
+      label: 'Email Address',
+      required: true,
+      validation: {
+        pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'
+      }
+    }
+  ]
+};
 
-    1. Clone the repository:
-    ```bash
-    git clone https://github.com/yourusername/hotform-builder.git
-    ```
+function App() {
+  const handleSubmit = (data) => {
+    console.log('Form data:', data);
+  };
 
-    2. Install dependencies:
-    ```bash
-    npm install
-    ```
+  return (
+    <HotForm
+      src={{ components: formConfig }}
+      onSubmit={handleSubmit}
+    />
+  );
+}
+```
 
-    3. Create a `.env` file in the root directory with the following content:
-    ```
-    MONGODB_URI=mongodb+srv://bhaskarkeelu92:HotForm@2024@hot-form-dev.lcij1.mongodb.net/?retryWrites=true&w=majority&appName=Hot-Form-Dev
-    ```
+## Supported Components
 
-    4. Start the Express server:
-    ```bash
-    node server.js
-    ```
+### Basic Components
+- TextField (`text`)
+- Checkbox (`checkbox`)
+- Radio (`radio`)
+- Select (`select`)
+- Button (`button`)
 
-    5. Start the development server:
-    ```bash
-    npm run dev
-    ```
+### Advanced Components
+- DateTime (`datetime`)
+- FileUpload (`fileupload`)
+- Signature (`signature`)
+- OTP (`otp`)
+- Tags (`tags`)
 
-    ## Usage
+### Premium Components
+- Wizard (`wizard`)
+- Language (`language`)
 
-    - Access the application at `http://localhost:3000`
-    - Use the login page to access the dashboard
-    - Register new users and manage existing users through the user management section
+### Layout Components
+- Container (`container`)
+- Table (`table`)
+- Tabs (`tabs`)
+- Collapse (`collapse`)
 
-    ## License
+### Chart Components
+- PieChart (`pie-chart`)
+- DoughnutChart (`doughnut-chart`)
+- BarChart (`bar-chart`)
+- LineChart (`line-chart`)
 
-    This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+### API Components
+- RestAPITrigger (`rest-api`)
+
+## Props
+
+| Prop | Type | Description |
+|------|------|-------------|
+| src | `{ components: FormComponent[] }` | Configuration object for the form |
+| onSubmit | `(data: Record<string, any>) => void` | Callback function called when the form is submitted |
+| onChange | `(data: Record<string, any>) => void` | Callback function called when any form value changes |
+
+## License
+
+MIT
