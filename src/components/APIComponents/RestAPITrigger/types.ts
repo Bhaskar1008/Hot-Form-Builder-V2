@@ -8,13 +8,16 @@ export interface APIResponse {
   timestamp: string;
 }
 
-export interface APIDetails {
-  id?: string;
+export interface SavedAPIDetails {
+  id: string;
   name: string;
-  url: string;
-  method: APIMethod;
-  headers: Record<string, string>;
-  body?: string;
   response: APIResponse;
-  curlCommand: string;
+  createdAt: string;
+  isSuccess: boolean;
+}
+
+export interface TestResult {
+  response: APIResponse;
+  isSuccess: boolean;
+  error?: string;
 }

@@ -18,7 +18,12 @@ const Login: React.FC = () => {
 
     try {
       const response = await login({ email, password });
-      if (response.success) {
+      
+      if (response.success && response.token) {
+        // Store the token in localStorage
+        localStorage.setItem('authToken', response.token);
+        
+        // Redirect to builder page
         navigate('/builder');
       } else {
         setError(response.message || 'Invalid credentials');

@@ -28,6 +28,14 @@ export const login = async (credentials: LoginCredentials): Promise<AuthResponse
     
     const data = await response.json();
     
+    // Handle successful login with token
+    if (data.token) {
+      return {
+        success: true,
+        token: data.token
+      };
+    }
+    
     if (!response.ok) {
       throw new Error(data.message || 'Login failed');
     }
@@ -85,4 +93,19 @@ export const resetPassword = async (email: string): Promise<AuthResponse> => {
       message: error instanceof Error ? error.message : 'Password reset failed',
     };
   }
+};
+
+// Add a function to check if user is authenticated
+export const isAuthenticated = (): boolean => {
+  return !!localStorage.getItem('authToken');
+};
+
+// Add a function to get the auth token
+export const getAuthToken = (): string | null => {
+  return localStorage.getItem('authToken');
+};
+
+// Add a function to remove the auth token (logout)
+export const logout = (): void => {
+  localStorage.removeItem('authToken');
 };

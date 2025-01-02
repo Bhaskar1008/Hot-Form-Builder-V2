@@ -23,9 +23,9 @@ export const FormBuilder: React.FC = () => {
 
   return (
     <div className="h-screen bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
-      <div className="flex h-full">
+      <div className="flex h-full" >
         {/* Component Panel */}
-        <div className="relative flex-shrink-0">
+        <div className="relative flex-shrink-0" style={{ overflowX: 'auto' }}>
           <div
             className={classNames(
               'bg-white shadow-lg transition-all duration-300 ease-in-out',
@@ -80,7 +80,7 @@ export const FormBuilder: React.FC = () => {
 
         {/* Properties Panel */}
         {!isPreviewMode && selectedComponent && (
-          <div className="relative flex-shrink-0">
+          <div className="relative flex-shrink-0" style={{ overflowX: 'auto' }}>
             <div
               className={classNames(
                 'bg-white shadow-lg transition-all duration-300 ease-in-out',
