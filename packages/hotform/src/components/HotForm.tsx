@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import { componentMap } from '../utils/componentMap';
 import { FormComponent } from '../types';
 import { TranslationProvider } from './Language/TranslationContext';
@@ -55,22 +57,24 @@ export const HotForm: React.FC<HotFormProps> = ({ src, onSubmit, onChange }) => 
   };
 
   return (
-    <TranslationProvider>
-      <form onSubmit={handleSubmit} className="space-y-6">
-        {src.components.map(component => renderComponent(component))}
-        
-        <div className="flex flex-col sm:flex-row justify-end gap-2 sm:gap-4 pt-6 border-t">
-          <TranslatedButton
-            type="reset"
-            variant="secondary"
-            onClick={() => setFormData({})}
-          />
-          <TranslatedButton
-            type="submit"
-            variant="primary"
-          />
-        </div>
-      </form>
-    </TranslationProvider>
+    <DndProvider backend={HTML5Backend}>
+      <TranslationProvider>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {src.components.map(component => renderComponent(component))}
+          
+          <div className="flex flex-col sm:flex-row justify-end gap-2 sm:gap-4 pt-6 border-t">
+            <TranslatedButton
+              type="reset"
+              variant="secondary"
+              onClick={() => setFormData({})}
+            />
+            <TranslatedButton
+              type="submit"
+              variant="primary"
+            />
+          </div>
+        </form>
+      </TranslationProvider>
+    </DndProvider>
   );
 };
