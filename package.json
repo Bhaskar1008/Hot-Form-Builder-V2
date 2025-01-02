@@ -3,6 +3,7 @@
   "private": true,
   "version": "1.0.1",
   "type": "module",
+  "description": "A dynamic form builder application designed for creating customizable and responsive forms with advanced UI components.",
   "author": "Bhaskar Keelu <bhaskar.keelu@iorta.in>",
   "contributors": [
     {
