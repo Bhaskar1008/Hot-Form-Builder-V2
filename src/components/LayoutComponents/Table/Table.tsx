@@ -18,6 +18,7 @@ const Table: React.FC<TableProps> = ({ component }) => {
     hover = true
   } = component.display || {};
 
+  // Generate default headers if none provided
   const tableHeaders = headers.length > 0 
     ? headers 
     : Array(columnCount).fill(null).map((_, index) => ({
@@ -44,7 +45,7 @@ const Table: React.FC<TableProps> = ({ component }) => {
               <tr>
                 {tableHeaders.map((header, index) => (
                   <th
-                    key={header.value}
+                    key={`header-${component.id}-${header.value || index}`}
                     className={classNames(
                       'px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider',
                       showBorders && 'border-b border-gray-200'
@@ -59,7 +60,7 @@ const Table: React.FC<TableProps> = ({ component }) => {
           <tbody className="bg-white divide-y divide-gray-200">
             {rows.map((_, rowIndex) => (
               <tr 
-                key={rowIndex}
+                key={`row-${component.id}-${rowIndex}`}
                 className={classNames(
                   striped && rowIndex % 2 === 0 && 'bg-gray-50',
                   hover && 'hover:bg-gray-100'
@@ -67,7 +68,7 @@ const Table: React.FC<TableProps> = ({ component }) => {
               >
                 {tableHeaders.map((_, colIndex) => (
                   <TableCell
-                    key={`${rowIndex}-${colIndex}`}
+                    key={`cell-${component.id}-${rowIndex}-${colIndex}`}
                     rowIndex={rowIndex}
                     colIndex={colIndex}
                     showBorders={showBorders}

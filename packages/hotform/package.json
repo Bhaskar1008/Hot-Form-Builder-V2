@@ -1,6 +1,6 @@
 {
   "name": "reactformbuilder-core",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A dynamic form builder component for React applications",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
