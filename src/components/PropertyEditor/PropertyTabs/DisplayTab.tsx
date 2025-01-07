@@ -1,9 +1,6 @@
 import React from 'react';
 import { FormComponent } from '../../../types/form';
-import { ComponentProperties } from '../../../types/propertyTypes';
 import PropertyField from '../PropertyField';
-import TableDisplayTab from './TableDisplayTab';
-import WizardDisplayTab from './WizardDisplayTab';
 
 interface DisplayTabProps {
   component: FormComponent;
@@ -11,14 +8,25 @@ interface DisplayTabProps {
 }
 
 const DisplayTab: React.FC<DisplayTabProps> = ({ component, onChange }) => {
-  // For specialized components, use their dedicated display tabs
-  if (component.type === 'table') {
-    return <TableDisplayTab component={component} onChange={onChange} />;
-  }
-  
-  if (component.type === 'wizard') {
-    return <WizardDisplayTab component={component} onChange={onChange} />;
-  }
+  const handleDisplayChange = (name: string, value: any) => {
+    // Update both display properties and direct component properties for label
+    if (name === 'label') {
+      onChange({
+        label: value,
+        display: {
+          ...component.display,
+          [name]: value
+        }
+      });
+    } else {
+      onChange({
+        display: {
+          ...component.display,
+          [name]: value
+        }
+      });
+    }
+  };
 
   const getDisplayProperties = () => {
     const baseProperties = [
@@ -28,8 +36,7 @@ const DisplayTab: React.FC<DisplayTabProps> = ({ component, onChange }) => {
       { name: 'disabled', type: 'switch' }
     ];
 
-    const componentType = component.type as keyof ComponentProperties;
-    switch (componentType) {
+    switch (component.type) {
       case 'text':
         return [
           ...baseProperties,
@@ -74,32 +81,17 @@ const DisplayTab: React.FC<DisplayTabProps> = ({ component, onChange }) => {
     }
   };
 
-  const handleDisplayChange = (name: string, value: any) => {
-    onChange({
-      display: {
-        ...component.display,
-        [name]: value
-      }
-    });
-  };
-
-  const properties = getDisplayProperties();
-
   return (
     <div className="space-y-6">
-      {properties.map((prop) => (
+      {getDisplayProperties().map((prop) => (
         <PropertyField
           key={prop.name}
           label={prop.name.split(/(?=[A-Z])/).join(' ').charAt(0).toUpperCase() + 
                 prop.name.split(/(?=[A-Z])/).join(' ').slice(1)}
           type={prop.type}
-          value={component.display?.[prop.name as keyof typeof component.display] ?? ''}
+          value={prop.name === 'label' ? component.label : (component.display?.[prop.name] ?? '')}
           onChange={(value) => handleDisplayChange(prop.name, value)}
-          options={prop.options}
           required={prop.required}
-          placeholder={prop.placeholder}
-          min={prop.min}
-          max={prop.max}
         />
       ))}
     </div>

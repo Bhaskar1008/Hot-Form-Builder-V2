@@ -25,13 +25,13 @@ const PropertyField: React.FC<PropertyFieldProps> = ({
   min,
   max
 }) => {
-  // Use local state to handle controlled component properly
-  const [value, setValue] = useState(propValue ?? '');
+  // Convert empty string to undefined for number fields
+  const initialValue = type === 'number' && propValue === '' ? undefined : propValue;
+  const [value, setValue] = useState(initialValue);
 
-  // Update local state when prop value changes
   useEffect(() => {
-    setValue(propValue ?? '');
-  }, [propValue]);
+    setValue(type === 'number' && propValue === '' ? undefined : propValue);
+  }, [propValue, type]);
 
   const handleChange = (newValue: any) => {
     setValue(newValue);
@@ -40,7 +40,7 @@ const PropertyField: React.FC<PropertyFieldProps> = ({
 
   const inputClasses = classNames(
     'w-full px-3 py-2 border border-gray-300 rounded-md',
-    'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500',
+    'focus:outline-none focus:ring-2 focus:ring-blue-500',
     'text-sm text-gray-900 placeholder-gray-400',
     'transition-colors duration-200'
   );
@@ -51,7 +51,7 @@ const PropertyField: React.FC<PropertyFieldProps> = ({
         return (
           <input
             type="text"
-            value={value}
+            value={value || ''}
             onChange={(e) => handleChange(e.target.value)}
             className={inputClasses}
             placeholder={placeholder}
@@ -62,10 +62,9 @@ const PropertyField: React.FC<PropertyFieldProps> = ({
       case 'textarea':
         return (
           <textarea
-            value={value}
+            value={value || ''}
             onChange={(e) => handleChange(e.target.value)}
-            className={inputClasses}
-            rows={3}
+            className={`${inputClasses} min-h-[100px]`}
             placeholder={placeholder}
             required={required}
           />
@@ -74,7 +73,7 @@ const PropertyField: React.FC<PropertyFieldProps> = ({
       case 'select':
         return (
           <select
-            value={value}
+            value={value || ''}
             onChange={(e) => handleChange(e.target.value)}
             className={inputClasses}
             required={required}
@@ -111,15 +110,15 @@ const PropertyField: React.FC<PropertyFieldProps> = ({
         return (
           <input
             type="number"
-            value={value}
+            value={value ?? ''}
             onChange={(e) => {
               const val = e.target.value;
-              handleChange(val === '' ? '' : parseFloat(val));
+              handleChange(val === '' ? undefined : Number(val));
             }}
             className={inputClasses}
-            required={required}
             min={min}
             max={max}
+            required={required}
           />
         );
 
@@ -138,3 +137,5 @@ const PropertyField: React.FC<PropertyFieldProps> = ({
     </div>
   );
 };
+
+export default PropertyField;
