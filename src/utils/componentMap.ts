@@ -8,6 +8,7 @@ import FileUpload from '../components/AdvancedComponents/FileUpload/FileUpload';
 import Signature from '../components/AdvancedComponents/Signature/Signature';
 import OTP from '../components/AdvancedComponents/OTP/OTP';
 import Tags from '../components/AdvancedComponents/Tags/Tags';
+import Password from '../components/AdvancedComponents/Password/Password';
 import Container from '../components/LayoutComponents/Container/Container';
 import Table from '../components/LayoutComponents/Table/Table';
 import Tabs from '../components/LayoutComponents/Tabs/Tabs';
@@ -30,6 +31,7 @@ export const componentMap: Record<string, React.FC<any>> = {
   signature: Signature,
   otp: OTP,
   tags: Tags,
+  password: Password,
 
   // Premium Components
   wizard: Wizard,

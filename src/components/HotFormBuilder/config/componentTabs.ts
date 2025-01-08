@@ -19,7 +19,8 @@ import {
   BarChart,
   LineChart,
   TrendingUp,
-  Network
+  Network,
+  Lock,
 } from 'lucide-react';
 
 export const componentTabs = [
@@ -44,6 +45,7 @@ export const componentTabs = [
       { type: 'signature', label: 'Signature', icon: PenTool },
       { type: 'otp', label: 'OTP', icon: Hash },
       { type: 'tags', label: 'Tags', icon: Tags },
+      { type: 'password', label: 'Password', icon: Lock },
     ]
   },
   {
