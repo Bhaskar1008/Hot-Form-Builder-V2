@@ -1,27 +1,4 @@
-import { 
-  TextCursor, 
-  CheckSquare, 
-  CircleDot, 
-  ListOrdered,
-  Calendar,
-  Upload,
-  PenTool,
-  Hash,
-  Tags,
-  LayoutGrid,
-  Table2,
-  Layers,
-  ChevronDown,
-  Crown,
-  Wand,
-  Globe,
-  PieChart,
-  BarChart,
-  LineChart,
-  TrendingUp,
-  Network,
-  Lock,
-} from 'lucide-react';
+import { TextCursor,   CheckSquare,   CircleDot,   ListOrdered,  Calendar,  Upload,  PenTool,  Hash,  Tags,  LayoutGrid,  Table2,  Layers,  ChevronDown,  Crown,  Wand,  Globe,  PieChart,  BarChart,  LineChart,  TrendingUp,  Network,  Lock,  Grid} from 'lucide-react';
 
 export const componentTabs = [
   {
@@ -66,6 +43,7 @@ export const componentTabs = [
       { type: 'table', label: 'Table', icon: Table2 },
       { type: 'tabs', label: 'Tabs', icon: Layers },
       { type: 'collapse', label: 'Collapse', icon: ChevronDown },
+      { type: 'grid', label: 'Grid', icon: Grid }
     ]
   },
   {

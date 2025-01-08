@@ -8,6 +8,11 @@ import { updateComponent } from '../../redux/slices/formSlice';
 import { PropertyHeader } from './components/PropertyHeader';
 import { PropertyTabList } from './components/PropertyTabList';
 import { PropertyContent } from './components/PropertyContent';
+import DisplayTab from './PropertyTabs/DisplayTab';
+import GridDisplayTab from './PropertyTabs/GridDisplayTab';
+import DataTab from './PropertyTabs/DataTab';
+import ValidationTab from './PropertyTabs/ValidationTab';
+import LogicTab from './PropertyTabs/LogicTab';
 import classNames from 'classnames';
 
 interface PropertyEditorProps {
@@ -41,7 +46,24 @@ const PropertyEditor: React.FC<PropertyEditorProps> = ({ componentId }) => {
     dispatch(updateComponent({ id: component.id, updates }));
   };
 
-  const currentTab = propertyTabs.find(tab => tab.id === activeTab)!;
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'display':
+        return component.type === 'grid' ? (
+          <GridDisplayTab component={component} onChange={handleChange} />
+        ) : (
+          <DisplayTab component={component} onChange={handleChange} />
+        );
+      case 'data':
+        return <DataTab component={component} onChange={handleChange} />;
+      case 'validation':
+        return <ValidationTab component={component} onChange={handleChange} />;
+      case 'logic':
+        return <LogicTab component={component} onChange={handleChange} />;
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="h-full flex flex-col">
@@ -66,7 +88,7 @@ const PropertyEditor: React.FC<PropertyEditorProps> = ({ componentId }) => {
           orientation === 'vertical' ? 'border-l' : 'border-t'
         )}>
           <PropertyContent
-            tab={currentTab}
+            tab={propertyTabs.find(tab => tab.id === activeTab)!}
             component={component}
             orientation={orientation}
             onChange={handleChange}

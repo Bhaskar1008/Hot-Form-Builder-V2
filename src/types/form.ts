@@ -56,6 +56,7 @@ export interface DisplayPropertiesType {
   hover?: boolean;
   orientation?: 'horizontal' | 'vertical';
   tabs?: Array<{ id: string; label: string }>;
+  grid?: GridConfig;
 }
 
 export interface DataPropertiesType {
@@ -132,4 +133,31 @@ export interface FormState {
 export interface WidgetComponent extends FormComponent {
   settings: Record<string, any>;
   style: Record<string, any>;
+}
+
+export interface GridColumnConfig {
+  size: number;
+  offset?: number;
+  order?: number;
+  sm?: number;
+  md?: number;
+  lg?: number;
+  xl?: number;
+  offsetSm?: number;
+  offsetMd?: number;
+  offsetLg?: number;
+  offsetXl?: number;
+  orderSm?: number;
+  orderMd?: number;
+  orderLg?: number;
+  orderXl?: number;
+}
+
+export interface GridConfig {
+  columns?: GridColumnConfig[];
+  alignment?: 'start' | 'center' | 'end' | 'around' | 'between';
+  verticalAlignment?: 'start' | 'center' | 'end';
+  noGutters?: boolean;
+  wrap?: boolean;
+  showBorders?: boolean;
 }

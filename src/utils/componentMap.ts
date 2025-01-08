@@ -13,6 +13,7 @@ import Container from '../components/LayoutComponents/Container/Container';
 import Table from '../components/LayoutComponents/Table/Table';
 import Tabs from '../components/LayoutComponents/Tabs/Tabs';
 import Collapse from '../components/LayoutComponents/Collapse/Collapse';
+import Grid from '../components/LayoutComponents/Grid';
 import { Wizard, Language } from '../components/PremiumComponents';
 import { PieChart, DoughnutChart, BarChart, LineChart } from '../components/ChartComponents';
 import RestAPITrigger from '../components/APIComponents/RestAPITrigger/RestAPITrigger';
@@ -42,6 +43,7 @@ export const componentMap: Record<string, React.FC<any>> = {
   table: Table,
   tabs: Tabs,
   collapse: Collapse,
+  grid: Grid,
 
   // Chart Components
   'pie-chart': PieChart,

@@ -5,6 +5,7 @@ import { updateComponent } from '../../redux/slices/formSlice';
 import { FormComponent } from '../../types/form';
 import { Settings, Database, ShieldCheck, Wand2 } from 'lucide-react';
 import classNames from 'classnames';
+import GridDisplayTab from '../PropertyEditor/PropertyTabs/GridDisplayTab';
 import DisplayTab from '../PropertyEditor/PropertyTabs/DisplayTab';
 import DataTab from '../PropertyEditor/PropertyTabs/DataTab';
 import ValidationTab from '../PropertyEditor/PropertyTabs/ValidationTab';
@@ -49,7 +50,11 @@ const PropertyEditor: React.FC<PropertyEditorProps> = ({ componentId }) => {
   const renderTabContent = () => {
     switch (activeTab) {
       case 'display':
-        return <DisplayTab component={component} onChange={handleChange} />;
+        return component.type === 'grid' ? (
+          <GridDisplayTab component={component} onChange={handleChange} />
+        ) : (
+          <DisplayTab component={component} onChange={handleChange} />
+        );
       case 'data':
         return <DataTab component={component} onChange={handleChange} />;
       case 'validation':
